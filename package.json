@@ -1,0 +1,39 @@
+{
+  "name": "x-asa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/server.js",
+    "build": "DEL /F /Q dist && webpack --mode development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GitHubsteven/x-asa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GitHubsteven/x-asa/issues"
+  },
+  "homepage": "https://github.com/GitHubsteven/x-asa#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "rm": "^0.1.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "file-loader": "^3.0.1",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-node-externals": "^1.7.2"
+  }
+}
