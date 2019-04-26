@@ -1,23 +1,17 @@
-const path = require('path')
+const path = require("path")
 const webpack = require('webpack')
-const nodeExternals = require('webpack-node-externals')
 const HtmlWebPackPlugin = require("html-webpack-plugin")
 module.exports = {
   entry: {
-    server: './src/index.js',
+    main: './src/index.js'
   },
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
     filename: '[name].js'
   },
-  target: 'web',  //Notice how we use target: ‘web’ for the app builds. This is VERY important, and you’ll get an error if you use target: ‘node’, so be sure to double check it.
-  node: {
-    // Need this when working with express, otherwise the build fails
-    __dirname: false,   // if you don't put this is, __dirname
-    __filename: false,  // and __filename return blank or /
-  },
-  externals: [nodeExternals()], // Need this to avoid error when working with Express
+  target: 'web',
+  devtool: 'source-map',
   module: {
     rules: [
       {
@@ -38,7 +32,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['css-loader']
+        use: [ 'style-loader', 'css-loader' ]
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -50,10 +44,7 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: "./src/html/index.html",
       filename: "./index.html",
-      /**
-       * Note that excludeChunks will exclude a file called server which we don’t want to be included into our HTML file, since that is the webserver, and not needed in the app itself.
-       */
-      excludeChunks: ['server']
+      excludeChunks: [ 'server' ]
     })
   ]
 }
