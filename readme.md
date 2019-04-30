@@ -99,3 +99,32 @@
   注意server 和client的target和entry的不同，至于谁优谁劣，不好说，因为对前端我只是入门而已。那么他们是如何通过什么方式联系在一起了呢？
   对于express来说，它需要一个index.html作为静态资源入口，那么webpack就在约定好的地方生成一个index.html就可以了，
   不过接下来如何实现页面跳转暂时也不清楚。
+
+ 整个流程为：
+
+ 5. 为开发环境增加webpack development middleware，这样的话，修改html/js/ts等文件的话，webpack可以直接帮我们
+ build，前端刷新页面就可以立马看到效果了。
+ 6. 但是我们不想刷页面，所以这里需要用到 Hot Module Reloading了。
+
+    6.1 修改webpack.dev.config.js中的main -->为hmr的客户端，代码如下
+    ```
+       // main: './src/index.js'
+        main: ['webpack-hot-middleware/client?path=__webpack_hmr$timeout=20000',
+          './src/index.js']
+    ```
+    6.2 修改server-dev.js,
+    ```
+    //add code
+    import webpackHotMiddleware from 'webpack-hot-middleware'
+    //其他代码
+    app.use(webpackHotMiddleware(compiler));
+    ```
+    6.3 修改入口 index.js
+    ```
+     if (typeof(module.hot) !== 'undefined') {
+       module.hot.accept();  //eslint-disable-line no-undef
+     }
+    ```
+    很遗憾，这里的热加载并没有发生（todo：解决这个问题）
+
+  7. eslint code linting
