@@ -13,13 +13,15 @@
 <script>
     import HelloComponent from './components/HelloComponent.vue'
     import Navigator from './components/Navigator.vue'
+    import router from './router/index.js'
 
     export default {
         name: "App",
         components: {
             HelloComponent,
             Navigator
-        }
+        },
+        router
     }
 </script>
 
