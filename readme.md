@@ -1,7 +1,7 @@
 
 [参考资料链接:](https://medium.com/@binyamin/creating-a-node-express-webpack-app-with-dev-and-prod-builds-a4962ce51334)
 
-2019年4月26日
+2019年4月26日(一个可能错误的readme.md)
 
     曾经以为，express整合webpack通过在express中定义编译器来，就如下面的代码：
 
@@ -125,6 +125,24 @@
        module.hot.accept();  //eslint-disable-line no-undef
      }
     ```
-    很遗憾，这里的热加载并没有发生（todo：解决这个问题）
+    很遗憾，这里的热加载并没有发生（好像有的时候可以，有的时候不可以）
 
   7. eslint code linting
+  引入相关的包
+  ```
+    npm install --save-dev eslint babel-eslint eslint-loader
+  ```
+  在webpack.config中增加rule
+  ```
+    {
+        enforce: "pre",
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
+        options: {
+          emitWarning: true,
+          failOnError: false,
+          failOnWarning: false
+        }
+      }
+  ```
