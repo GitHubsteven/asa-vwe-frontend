@@ -58,15 +58,16 @@ module.exports = {
             {
                 test: /\.vue$/,
                 use: ['vue-loader']
-            },
-            {
-                test: /\.styl(us)?$/,
-                use: [
-                    'vue-style-loader',
-                    'css-loader',
-                    'stylus-loader'
-                ]
             }
+            // ,
+            // {
+            //     test: /\.styl(us)?$/,
+            //     use: [
+            //         'vue-style-loader',
+            //         'css-loader',
+            //         'stylus-loader'
+            //     ]
+            // }
         ]
     },
     plugins: [
