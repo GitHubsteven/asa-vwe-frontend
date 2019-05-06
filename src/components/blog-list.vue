@@ -22,8 +22,9 @@
 </template>
 
 <script>
+    //引入接口辅助类
   import {ApiService} from '../js/apiSerivce.js'
-
+    //定义一个对象
   const apiService = new ApiService();
 
   export default {
@@ -34,14 +35,17 @@
         numberOfBlogs: 0
       }
     },
+      //定义方法
     methods: {
       getBlogs() {
+          //调用接口获取数据，并且更新vue页面数据
         apiService.getBlogs().then((resp) => {
           this.blogs = resp;
           this.numberOfBlogs = resp.length;
         });
       }
     },
+      //在vue被渲染的时候调用方法
     mounted() {
       this.getBlogs();
     }
