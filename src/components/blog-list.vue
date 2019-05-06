@@ -1,18 +1,20 @@
 <template>
     <div>
         <table>
-            <tbody>
+            <thead>
             <tr>
-                <th>index</th>
                 <th>title</th>
-                <th>abstract</th>
+                <th>context</th>
                 <th>author</th>
+                <th>createTime</th>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>test</td>
-                <td>test blog abstract</td>
-                <td>rb.x</td>
+            </thead>
+            <tbody>
+            <tr v-for="blog in blogs" v-bind:key="blog.id">
+                <td>{{blog.title}}</td>
+                <td>{{blog.context}}</td>
+                <td>{{blog.author}}</td>
+                <td>{{blog.createTime}}</td>
             </tr>
             </tbody>
         </table>
@@ -20,9 +22,30 @@
 </template>
 
 <script>
-    export default {
-        name: "blog-list"
+  import {ApiService} from '../js/apiSerivce.js'
+
+  const apiService = new ApiService();
+
+  export default {
+    name: "blog-list",
+    data() {
+      return {
+        blogs: [],
+        numberOfBlogs: 0
+      }
+    },
+    methods: {
+      getBlogs() {
+        apiService.getBlogs().then((resp) => {
+          this.blogs = resp;
+          this.numberOfBlogs = resp.length;
+        });
+      }
+    },
+    mounted() {
+      this.getBlogs();
     }
+  }
 </script>
 
 <style scoped>

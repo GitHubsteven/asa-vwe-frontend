@@ -5,6 +5,12 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import config from '../../webpack.dev.config.js'
 
+let createError = require('http-errors');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+import router from '../ex-router/ex-router';
+
+
 const app = express(),
   DIST_DIR = __dirname,
   HTML_FILE = path.join(DIST_DIR, 'index.html'),
@@ -13,25 +19,19 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
 }));
 
-// app.use(webpackHotMiddleware(compiler));
+app.use(router);
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
 
-// app.get('*', (req, res, next) => {
-//   compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
-//     if (err) {
-//       return next(err)
-//     }
-//     res.set('content-type', 'text/html')
-//     res.send(result)
-//     res.end()
-//   })
-// })
 app.use(webpackHotMiddleware(compiler, {
   noInfo: false,
   publicPath: config.output.publicPath
 }));
 
 app.use('/public', express.static('public'));
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
