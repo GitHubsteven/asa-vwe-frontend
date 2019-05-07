@@ -14,4 +14,8 @@ export class ApiService {
         return axios.get(url).then((res) => res.data);
     }
 
+    viewBlog() {
+        const url = `${API_URL}/blog-view/`;
+        return axios.get(url).then((res) => res.data);
+    }
 }

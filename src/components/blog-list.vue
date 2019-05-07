@@ -27,6 +27,8 @@
     //定义一个对象
   const apiService = new ApiService();
 
+  // import {ApiService as apiService} from "../js/apiSerivce";
+
   export default {
     name: "blog-list",
     data() {

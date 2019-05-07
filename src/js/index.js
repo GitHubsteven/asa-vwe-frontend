@@ -1,4 +1,4 @@
-import logMessage from './js/logger'
+import logMessage from 'logger'
 import './css/style.css'
 
 // Log message to console
