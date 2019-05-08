@@ -1,6 +1,5 @@
 <template>
     <div>
-        <p><span>welcome to x-asa blog!</span></p>
         <table>
             <thead>
             <tr>

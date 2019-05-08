@@ -19,9 +19,9 @@
 <script>
   import {Converter} from 'showdown';
 
-  let converter = new Converter({table: true});
+  let converter = new Converter({tables: true});
 
-  converter.setFlavor('github');
+  // converter.setFlavor('github');
 
   export default {
     name: "blog-add",
@@ -42,9 +42,5 @@
 </script>
 
 <style type="text/css" scoped>
-    .part {
-        display: inline-block;
-        width: 500px;
-        height: 1000px;
-    }
+
 </style>

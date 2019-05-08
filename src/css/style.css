@@ -1,11 +1,20 @@
-/*h1, h2, h3, h4, h5, p {*/
-    /*font-family: helvetica, serif;*/
-    /*color: deepskyblue;*/
-    /*background: ghostwhite;*/
-/*}*/
+h4{
+    font-family: helvetica, serif;
+    color: deepskyblue;
+    background: ghostwhite;
+}
 
-.border-style {
-    border: 10px deepskyblue;
+/*.border-style {*/
+    /*border: 10px deepskyblue;*/
+/*}*/
+.part {
+    display: inline-block;
+    width: 500px;
+    height: 800px;
+}
+
+table, td, th {
+    border: 1px solid black;
 }
 
 .description {
