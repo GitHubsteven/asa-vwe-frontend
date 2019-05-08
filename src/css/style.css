@@ -1,7 +1,11 @@
-h1, h2, h3, h4, h5, p {
-    font-family: helvetica, serif;
-    color: deepskyblue;
-    background: ghostwhite;
+/*h1, h2, h3, h4, h5, p {*/
+    /*font-family: helvetica, serif;*/
+    /*color: deepskyblue;*/
+    /*background: ghostwhite;*/
+/*}*/
+
+.border-style {
+    border: 10px deepskyblue;
 }
 
 .description {
