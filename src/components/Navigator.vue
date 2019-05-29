@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  // import router from '../router/index.js'
+  import router from '../router/index.js'
 
   export default {
     name: "Navigator",
@@ -21,6 +21,6 @@
         required: true
       }
     },
-    // router
+    router
   }
 </script>

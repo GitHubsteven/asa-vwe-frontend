@@ -29,6 +29,9 @@
 1. webStorm
 2. node.js
 
+[项目github地址：express-webpack](https://github.com/GitHubsteven/express-webpack)
+
+[后续项目git地址：x-asa](https://github.com/GitHubsteven/x-asa)
 ##### 参考资料 #####
 1. [Creating a Node Express-Webpack App with Dev and Prod Builds](https://medium.com/@binyamin/creating-a-node-express-webpack-app-with-dev-and-prod-builds-a4962ce51334)
 2. [让你的站点也支持MarkDown](https://www.cnblogs.com/yunfeifei/p/4482495.html)
