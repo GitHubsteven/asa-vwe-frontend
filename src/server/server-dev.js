@@ -10,6 +10,11 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 import router from '../ex-router/ex-router';
 
+//链接数据库
+let bodyParser = require('body-parser');
+let cors = require('cors');
+let mongoose = require('mongoose');
+
 
 const app = express(),
   DIST_DIR = __dirname,
@@ -19,11 +24,24 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
 }));
 
+//服务器连接数据库
+let DB_URL = "mongodb://localhost:27017/blogs";
+mongoose.connect(DB_URL, {useNewUrlParser: true})
+  .then(() => {
+      console.log("connect successfully!")
+    }, (err) => {
+      console.log('error when connect to mongo db!' + err)
+    }
+  );
+
 app.use(router);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
+//表示数据格式以json方式来传递？
+app.use(bodyParser.json());
+app.use(cors());
 
 app.use(webpackHotMiddleware(compiler, {
   noInfo: false,
