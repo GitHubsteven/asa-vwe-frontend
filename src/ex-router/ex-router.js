@@ -1,6 +1,6 @@
 let express = require('express');
 let BlogModel = require('../models/Blog.js');
-let router = express.Router({caseSensitive: false, mergeParams: false, strict: false});
+let router = express.Router();
 
 module.exports = router;
 
@@ -17,17 +17,17 @@ router.get('/blog-view', (req, res) => {
   res.send(JSON.stringify({}));
 });
 
-router.route('/blog-create').post((req, res) => {
-  console.log(req.body);
+router.route('/blog-create').post((request, response) => {
+  console.log(request.body);
   let blog = new BlogModel();
-  if (req.body) {
-    blog.title = req.body.title;
-    blog.context = req.body.context;
+  if (request.body) {
+    blog.title = request.body.title;
+    blog.context = request.body.context;
   }
   blog.save().then((blog) => {
     console.log("----------> create successfully");
-    res.status(200).json(blog);
+    response.status(200).json(blog);
   }).catch((err) => {
-    res.status(400).send("error when saving to MongoDB");
+    response.status(400).send("error when saving to MongoDB");
   })
 });

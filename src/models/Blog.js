@@ -5,7 +5,7 @@ let Schema = mongoose.Schema;
 let BlogSchema = new Schema({
   title: String,
   author: String,
-  body: String,
+  context: String,
   // comments: [CommentModel],
   date: {type: Date, default: Date.now},
 });

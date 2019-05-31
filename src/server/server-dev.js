@@ -34,16 +34,14 @@ mongoose.connect(DB_URL, {useNewUrlParser: true})
     }
   );
 
-app.use(router);
-app.use(logger('dev'));
-app.use(cookieParser());
 //表示数据格式以json方式来传递？
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.use(cors());
 
+// app.use(logger('dev'));
+app.use(cookieParser());
+app.use(router);
 
 app.use(webpackHotMiddleware(compiler, {
   noInfo: false,
@@ -63,4 +61,4 @@ app.listen(PORT, (err) => {
   }
   console.log(`App listening to ${PORT}....`)
   console.log('Press Ctrl+C to quit.')
-})
+});
