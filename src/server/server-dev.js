@@ -36,12 +36,14 @@ mongoose.connect(DB_URL, {useNewUrlParser: true})
 
 app.use(router);
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 //表示数据格式以json方式来传递？
-app.use(bodyParser.json());
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 app.use(cors());
+
 
 app.use(webpackHotMiddleware(compiler, {
   noInfo: false,

@@ -13,29 +13,49 @@
                 </td>
             </tr>
         </table>
+        <button class="btn btn-primary" v-if="!blog.id" @click="create(blog)"><span>Create Blog</span></button>
     </div>
 </template>
 
 <script>
   import {Converter} from 'showdown';
+  import {ApiService} from "../js/apiService";
 
   let converter = new Converter({tables: true});
+  let apiService = new ApiService();
 
   // converter.setFlavor('github');
 
   export default {
     name: "blog-add",
-    data() {
+    data: function () {
       return {
         blog: {
           title: "blog-title",
-          context: "hello,world"
+          context: "hello,world",
+          id: null
         },
         contextInHtml: () => {
-          let res = converter.makeHtml(this.blog.context);
-          console.log(res);
-          return res;
-        }
+          return converter.makeHtml(this.blog.context);
+        },
+      }
+    },
+    methods: {
+      create() {
+        let blog = {
+          title: "title",
+          context: "good evening"
+        };
+        apiService.createBlog(blog).then(res => {
+          if (!res.id) {
+            window.alert("res:" + res.message);
+          } else {
+            console.log(res)
+          }
+        })
+      },
+      updateBlog() {
+
       }
     }
   }
