@@ -7,7 +7,7 @@ let BlogSchema = new Schema({
   author: String,
   context: String,
   // comments: [CommentModel],
-  date: {type: Date, default: Date.now},
+    createTime: {type: Date, default: Date.now},
 });
 
 

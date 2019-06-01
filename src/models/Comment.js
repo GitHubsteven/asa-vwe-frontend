@@ -2,10 +2,10 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let CommentSchema = new Schema({
-  author: String,
-  body: String,
-  email: String,
-  date: {type: Date, default: Date.now},
+    author: String,
+    context: String,
+    email: String,
+    createTime: {type: Date, default: Date.now},
 });
 
 

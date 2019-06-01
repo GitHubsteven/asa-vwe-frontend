@@ -2,6 +2,14 @@
     <div>
         <table>
             <tr>
+                <td colspan="3">
+                    <label> title:</label>
+                    <label>
+                        <input type="text" v-model="blog.title" style="width: 90%">
+                    </label>
+                </td>
+            </tr>
+            <tr>
                 <td>
                     <label>
                         <textarea v-model="blog.context" class="part"></textarea>
@@ -13,52 +21,46 @@
                 </td>
             </tr>
         </table>
-        <button class="btn btn-primary" v-if="!blog.id" @click="create(blog)"><span>Create Blog</span></button>
+        <button class="btn btn-primary" v-if="!blog.id" @click="create()"><span>Create Blog</span></button>
     </div>
 </template>
 
 <script>
-  import {Converter} from 'showdown';
-  import {ApiService} from "../js/apiService";
+    import {Converter} from 'showdown';
+    import {ApiService} from "../js/apiService";
 
-  let converter = new Converter({tables: true});
-  let apiService = new ApiService();
+    let converter = new Converter({tables: true});
+    let apiService = new ApiService();
 
-  // converter.setFlavor('github');
+    // converter.setFlavor('github');
 
-  export default {
-    name: "blog-add",
-    data: function () {
-      return {
-        blog: {
-          title: "blog-title",
-          context: "hello,world",
-          id: null
+    export default {
+        name: "blog-add",
+        data: function () {
+            return {
+                blog: {
+                    title: "blog-title",
+                    context: "hello,world",
+                    id: null
+                },
+                contextInHtml: () => {
+                    return converter.makeHtml(this.blog.context);
+                },
+            }
         },
-        contextInHtml: () => {
-          return converter.makeHtml(this.blog.context);
-        },
-      }
-    },
-    methods: {
-      create() {
-        let blog = {
-          title: "title",
-          context: "good evening"
-        };
-        apiService.createBlog(blog).then(res => {
-          if (!res.id) {
-            window.alert("res:" + res.message);
-          } else {
-            console.log(res)
-          }
-        })
-      },
-      updateBlog() {
-
-      }
+        methods: {
+            create() {
+                this.blog.author = "asa.x";
+                apiService.createBlog(this.blog).then(res => {
+                    if (!res.id) {
+                        window.alert("res:" + res.message);
+                    } else {
+                        console.log(res)
+                    }
+                })
+            }
+        }
     }
-  }
 </script>
 
 <style type="text/css" scoped>
