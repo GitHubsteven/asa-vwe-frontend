@@ -26,13 +26,15 @@ app.use(webpackDevMiddleware(compiler, {
 
 //服务器连接数据库
 let DB_URL = "mongodb://localhost:27017/blogs";
-mongoose.connect(DB_URL, {useNewUrlParser: true})
+mongoose.connect(DB_URL, {useNewUrlParser: true, useCreateIndex: true})
   .then(() => {
       console.log("connect successfully!")
     }, (err) => {
       console.log('error when connect to mongo db!' + err)
     }
   );
+
+mongoose.set('useFindAndModify', false);
 
 //表示数据格式以json方式来传递？
 app.use(bodyParser.urlencoded({extended: false}));

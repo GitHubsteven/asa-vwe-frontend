@@ -21,6 +21,7 @@
   "homepage": "https://github.com/GitHubsteven/x-asa#readme",
   "dependencies": {
     "express": "^4.16.3",
+    "lodash": "^4.17.11",
     "rm": "^0.3.0",
     "showdown": "^1.9.0",
     "vue": "^2.6.10",

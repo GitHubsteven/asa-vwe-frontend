@@ -26,41 +26,45 @@
 </template>
 
 <script>
-    import {Converter} from 'showdown';
-    import {ApiService} from "../js/apiService";
+  import {Converter} from 'showdown';
+  import {ApiService} from "../js/apiService";
 
-    let converter = new Converter({tables: true});
-    let apiService = new ApiService();
+  let converter = new Converter({tables: true});
+  let apiService = new ApiService();
 
-    // converter.setFlavor('github');
+  // converter.setFlavor('github');
 
-    export default {
-        name: "blog-add",
-        data: function () {
-            return {
-                blog: {
-                    title: "blog-title",
-                    context: "hello,world",
-                    id: null
-                },
-                contextInHtml: () => {
-                    return converter.makeHtml(this.blog.context);
-                },
-            }
+  export default {
+    name: "blog-add",
+    data: function () {
+      return {
+        blog: {
+          title: "blog-title",
+          context: "hello,world",
+          id: null
         },
-        methods: {
-            create() {
-                this.blog.author = "asa.x";
-                apiService.createBlog(this.blog).then(res => {
-                    if (!res.id) {
-                        window.alert("res:" + res.message);
-                    } else {
-                        console.log(res)
-                    }
-                })
-            }
-        }
+        contextInHtml: () => {
+          return converter.makeHtml(this.blog.context);
+        },
+      }
+    },
+    methods: {
+      create() {
+        this.blog.author = "asa.x";
+        apiService.createBlog(this.blog).then(res => {
+          if (!res._id) {
+            window.alert("res:" + res.message);
+          } else {
+            //页面跳转
+            this.$router.push({
+              path: '/blog-list',
+              name: 'BlogList'
+            })
+          }
+        })
+      }
     }
+  }
 </script>
 
 <style type="text/css" scoped>
