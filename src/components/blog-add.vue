@@ -21,18 +21,21 @@
                 </td>
             </tr>
         </table>
-        <button class="btn btn-primary" v-if="!blog.id" @click="create()"><span>Create Blog</span></button>
+        <button class="btn btn-primary" v-if="!blog._id" @click="create()"><span>Create Blog</span></button>
+        <button class="btn btn-primary" v-if="blog._id" @click="update()"><span>Update Blog</span></button>
     </div>
 </template>
 
 <script>
   import {Converter} from 'showdown';
   import {ApiService} from "../js/apiService";
+  import * as _ from "lodash";
 
   let converter = new Converter({tables: true});
   let apiService = new ApiService();
 
   // converter.setFlavor('github');
+  let author = "asa-x";
 
   export default {
     name: "blog-add",
@@ -50,7 +53,6 @@
     },
     methods: {
       create() {
-        this.blog.author = "asa.x";
         apiService.createBlog(this.blog).then(res => {
           if (!res._id) {
             window.alert("res:" + res.message);
@@ -62,7 +64,40 @@
             })
           }
         })
+      },
+      update() {
+        let oldBlog = this.$route.params.blog;
+        if (oldBlog.title === this.blog.title
+          && oldBlog.context === this.blog.context
+          && oldBlog.author === this.blog.author) {
+          window.alert("there is no change!");
+          return;
+        }
+        apiService.update(this.blog).then((resp) => {
+          if (!resp) {
+            window.alert("update failed!");
+          }
+          this.$router.push({
+            path: '/blog-view',
+            name: 'BlogView',
+            params: {
+              blogId: oldBlog._id
+            }
+          })
+        }, (error) => {
+          console.log(error);
+          window.alert("update failed!");
+        });
+      },
+      init() {
+        let vblog = this.$route.params.blog;
+        if (vblog) {
+          Object.assign(this.blog, vblog);
+        }
       }
+    },
+    mounted() {
+      this.init()
     }
   }
 </script>

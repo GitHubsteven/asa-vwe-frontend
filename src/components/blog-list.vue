@@ -19,6 +19,7 @@
                 <td>
                     <button @click="detail(blog)">Detail</button>
                     <button @click="del(blog)">Delete</button>
+                    <button @click="update(blog)">Update</button>
                 </td>
             </tr>
             </tbody>
@@ -68,6 +69,15 @@
             this.getBlogs();
           } else {
             window.alert("blank resp");
+          }
+        })
+      },
+      update(blog) {
+        this.$router.push({
+          path: "/blog-add",
+          name: "BlogAdd",
+          params: {
+            blog: blog
           }
         })
       }
