@@ -29,7 +29,7 @@ module.exports = {
                     emitWarning: true,
                     failOnError: false,
                     failOnWarning: false
-                }
+                },
             },
             {
                 test: /\.js$/,

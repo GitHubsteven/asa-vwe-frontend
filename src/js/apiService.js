@@ -5,38 +5,36 @@ const API_URL = "http://localhost:8090";
 
 //定义并且曝光出一个类
 export class ApiService {
-  constructor() {
-  }
+    constructor() {
+    }
 
 //定义一个方法查询
-  getBlogs() {
-    const url = `${API_URL}/blog-list/`;
-    return axios.get(url).then((res) => res.data);
-  }
+    getBlogs() {
+        const url = `${API_URL}/blog-list/`;
+        return axios.get(url).then((res) => res.data);
+    }
 
-  //查询
-  viewBlog(id) {
-    const url = `${API_URL}/blog-view/${id}`;
-    return axios.get(url).then((res) => res.data);
-  }
+    //查询
+    viewBlog(id) {
+        const url = `${API_URL}/blog-view/${id}`;
+        return axios.get(url).then((res) => res.data);
+    }
 
-  //插入
-  createBlog(blog) {
-    let url = `${API_URL}/blog-create/`;
-    return axios.post(url, blog).then((res) => res.data);
-  }
+    //插入
+    createBlog(blog) {
+        let url = `${API_URL}/blog-create/`;
+        return axios.post(url, blog).then((res) => res.data);
+    }
 
-  //删除，调用delete表示删除数据
-  delBlog(id) {
-    let url = `${API_URL}/blog-delete/${id}`;
-    return axios.delete(url);
-  }
+    //删除，调用delete表示删除数据
+    delBlog(id) {
+        let url = `${API_URL}/blog-delete/${id}`;
+        return axios.delete(url);
+    }
 
-  //更新，调用put方法，表示修改数据
-  update(blog) {
-    let url = `${API_URL}/blog-update/${blog._id}`;
-    return axios.put(url, blog).then((res) => {
-      res.data;
-    })
-  }
+    //更新，调用put方法，表示修改数据
+    update(blog) {
+        let url = `${API_URL}/blog-update/${blog._id}`;
+        return axios.put(url, blog).then((res) => res.data)
+    }
 }

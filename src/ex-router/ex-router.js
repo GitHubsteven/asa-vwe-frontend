@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 let express = require('express');
 let BlogModel = require('../models/Blog.js');
 let router = express.Router();
@@ -57,6 +58,8 @@ router.route("/blog-delete/:id").delete((req, res) => {
 //更新博客
 router.route("/blog-update/:id").put((req, res) => {
     BlogModel.findByIdAndUpdate(req.params.id, req.body, {useFindAndModify: true}, (err, todo) => {
+        console.log(err);
+        console.log(todo);
         if (err) {
             res.json(err)
         } else {
