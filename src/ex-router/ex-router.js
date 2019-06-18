@@ -43,7 +43,6 @@ router.route('/blog-create').post((request, response) => {
         response.status(400).send("error when saving to MongoDB");
     })
 });
-//虽然用get可以，但是用delete可以吗？
 router.route("/blog-delete/:id").delete((req, res) => {
     BlogModel.findByIdAndRemove({_id: req.params.id}, {useFindAndModify: true}, (err, todo) => {
         console.log("delete %o", todo);

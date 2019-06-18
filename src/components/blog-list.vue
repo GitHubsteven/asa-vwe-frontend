@@ -13,7 +13,7 @@
             <tbody>
             <tr v-for="blog in blogs" v-bind:key="blog.id">
                 <td>{{blog.title}}</td>
-                <td v-html="convertMarkdown(blog.context)"></td>
+                <td>{{blog.context}}"></td>
                 <td>{{blog.author}}</td>
                 <td>{{blog.createTime}}</td>
                 <td>
