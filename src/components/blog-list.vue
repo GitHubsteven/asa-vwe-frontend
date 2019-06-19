@@ -1,29 +1,37 @@
 <template>
     <div>
-        <table>
-            <thead>
-            <tr>
-                <th>title</th>
-                <th>context</th>
-                <th>author</th>
-                <th>createTime</th>
-                <th>operate</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="blog in blogs" v-bind:key="blog.id">
-                <td>{{blog.title}}</td>
-                <td>{{convert2PlainText(blog.context)}}</td>
-                <td>{{blog.author}}</td>
-                <td>{{blog.createTime}}</td>
-                <td>
-                    <button @click="detail(blog)">Detail</button>
-                    <button @click="del(blog)">Delete</button>
-                    <button @click="update(blog)">Update</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <el-row>
+            <el-col :span="12"><div class="grid-content bg-purple">
+                <p>A placeholder</p>
+            </div></el-col>
+            <el-col :span="12"><div class="grid-content bg-purple-light">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>title</th>
+                        <th>context</th>
+                        <th>author</th>
+                        <th>createTime</th>
+                        <th>operate</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="blog in blogs" v-bind:key="blog.id">
+                        <td>{{blog.title}}</td>
+                        <td>{{convert2PlainText(blog.context)}}</td>
+                        <td>{{blog.author}}</td>
+                        <td>{{blog.createTime}}</td>
+                        <td>
+                            <button @click="detail(blog)">Detail</button>
+                            <button @click="del(blog)">Delete</button>
+                            <button @click="update(blog)">Update</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div></el-col>
+        </el-row>
+
     </div>
 </template>
 
