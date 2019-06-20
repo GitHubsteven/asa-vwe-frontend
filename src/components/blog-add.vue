@@ -1,107 +1,121 @@
 <template>
     <div>
-        <table>
-            <tr>
-                <td colspan="3">
-                    <label> title:</label>
-                    <label>
-                        <input type="text" v-model="blog.title" style="width: 90%">
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>
-                        <textarea v-model="blog.context" class="part"></textarea>
-                    </label>
-                </td>
-                <td><label><---简单的分割线----></label></td>
-                <td>
-                    <p v-html="convertMarkdown(blog.context)" class="part"></p>
-                </td>
-            </tr>
-        </table>
-        <button class="btn btn-primary" v-if="!blog._id" @click="create()"><span>Create Blog</span></button>
-        <button class="btn btn-primary" v-if="blog._id" @click="update()"><span>Update Blog</span></button>
+        <el-row>
+            <el-col :span="23" :offset="1">
+                <div>
+                    <el-input placeholder="名称" v-model="blog.title">
+                        <template slot="prepend">名称</template>
+                    </el-input>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row style="margin-top: 10px">
+            <el-col :span="10" :offset="1" id="editor">
+                <el-input
+                        type="textarea"
+                        placeholder="请输入内容"
+                        v-model="blog.context"
+                        maxlength="3000"
+                        show-word-limit
+                        :autosize="{ minRows: 50, maxRows: 300 }"
+                >
+                </el-input>
+            </el-col>
+            <el-col :span="10" :offset="1" id="shower">
+                <el-input
+                        type="textarea"
+                        v-html="convertMarkdown(blog.context)"
+                        maxlength="3000"
+                        show-word-limit
+                        :autosize="{ minRows: 50, maxRows: 300 }"
+                >
+                </el-input>
+            </el-col>
+        </el-row>
+        <el-row style="margin-top: 10px">
+            <el-col :span="23" :offset="1">
+                <el-button type="primary" v-if="!blog._id" @click="create()">Create</el-button>
+                <el-button type="primary" v-if="blog._id" @click="update()">Update</el-button>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
 <script>
-    import {Converter} from 'showdown';
-    import {ApiService} from "../js/apiService";
-    import * as _ from "lodash";
+  import {Converter} from 'showdown';
+  import {ApiService} from "../js/apiService";
+  import * as _ from "lodash";
 
-    let converter = new Converter({tables: true});
-    let apiService = new ApiService();
+  let converter = new Converter({tables: true});
+  let apiService = new ApiService();
 
-    // converter.setFlavor('github');
-    let author = "asa.x";
-
-    export default {
-        name: "blog-add",
-        data: function () {
-            return {
-                blog: {
-                    title: "blog-title",
-                    context: "hello,world",
-                    author: author,
-                    id: null
-                },
-            }
+  let blogTmp = {};
+  export default {
+    name: "blog-add",
+    data: function () {
+      return {
+        blog: {
+          title: null,
+          context: null,
+          author: null,
+          createTime: null,
+          id: null
         },
-        methods: {
-            create() {
-                apiService.createBlog(this.blog).then(res => {
-                    if (!res._id) {
-                        window.alert("res:" + res.message);
-                    } else {
-                        //页面跳转
-                        this.$router.push({
-                            path: '/blog-list',
-                            name: 'BlogList'
-                        })
-                    }
-                })
-            },
-            convertMarkdown(context) {
-                return converter.makeHtml(context);
-            },
+      }
+    },
+    methods: {
+      create() {
+        apiService.createBlog(this.blog).then(res => {
+          if (!res._id) {
+            window.alert("res:" + res.message);
+          } else {
+            //页面跳转
+            this.$router.push({
+              path: '/blog-list',
+              name: 'BlogList'
+            })
+          }
+        })
+      },
+      convertMarkdown(context) {
+        return converter.makeHtml(context);
+      },
 
-            init() {
-                let vblog = this.$route.params.blog;
-                if (vblog) {
-                    Object.assign(this.blog, vblog);
-                }
-            },
-            update() {
-                let oldBlog = this.$route.params.blog;
-                if (oldBlog.title === this.blog.title
-                    && oldBlog.context === this.blog.context
-                    && oldBlog.author === this.blog.author) {
-                    window.alert("there is no change!");
-                    return;
-                }
-                apiService.update(this.blog).then((resp) => {
-                    if (!resp) {
-                        window.alert("update failed!");
-                    }
-                    this.$router.push({
-                        path: '/blog-view',
-                        name: 'BlogView',
-                        params: {
-                            blogId: oldBlog._id
-                        }
-                    })
-                }, (error) => {
-                    console.log(error);
-                    window.alert("update failed!");
-                });
-            },
-        },
-        mounted() {
-            this.init()
+      init() {
+        blogTmp = JSON.parse(this.$route.query.blog);
+        if (blogTmp) {
+          Object.assign(this.blog, blogTmp);
         }
+      },
+      update() {
+        let oldBlog = blogTmp;
+        if (oldBlog.title === this.blog.title
+          && oldBlog.context === this.blog.context
+          && oldBlog.author === this.blog.author) {
+          window.alert("there is no change!");
+          return;
+        }
+        apiService.update(this.blog).then((resp) => {
+          if (!resp) {
+            window.alert("update failed!");
+          }
+          this.$router.push({
+            path: '/blog-view',
+            name: 'BlogView',
+            params: {
+              blogId: oldBlog._id
+            }
+          })
+        }, (error) => {
+          console.log(error);
+          window.alert("update failed!");
+        });
+      },
+    },
+    mounted() {
+      this.init()
     }
+  }
 </script>
 
 <style type="text/css" scoped>

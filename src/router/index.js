@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import BlogList from '../components/blog-list.vue'
 import BlogView from '../components/blog-view.vue'
 import BlogAdd from '../components/blog-add.vue'
+import Joy from '../components/joy.vue'
 
 Vue.use(Router);
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/blog-add',
       name: 'BlogAdd',
       component: BlogAdd
+    },
+    {
+      path: '/joy',
+      name: 'Joy',
+      component: Joy
     }
   ]
 })

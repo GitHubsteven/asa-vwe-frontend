@@ -31,13 +31,11 @@ router.get('/blog-view/:id', (req, res) => {
 });
 
 router.route('/blog-create').post((request, response) => {
-    console.log(request.body);
     let blog = new BlogModel();
     if (request.body) {
         Object.assign(blog, request.body)
     }
     blog.save().then((blog) => {
-        console.log("----------> create successfully");
         response.status(200).json(blog);
     }).catch((err) => {
         response.status(400).send("error when saving to MongoDB");
@@ -45,7 +43,6 @@ router.route('/blog-create').post((request, response) => {
 });
 router.route("/blog-delete/:id").delete((req, res) => {
     BlogModel.findByIdAndRemove({_id: req.params.id}, {useFindAndModify: true}, (err, todo) => {
-        console.log("delete %o", todo);
         if (err) {
             res.json(err);
         } else {
@@ -57,8 +54,6 @@ router.route("/blog-delete/:id").delete((req, res) => {
 //更新博客
 router.route("/blog-update/:id").put((req, res) => {
     BlogModel.findByIdAndUpdate(req.params.id, req.body, {useFindAndModify: true}, (err, todo) => {
-        console.log(err);
-        console.log(todo);
         if (err) {
             res.json(err)
         } else {
