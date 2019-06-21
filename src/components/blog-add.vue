@@ -7,10 +7,15 @@
                         <template slot="prepend">名称</template>
                     </el-input>
                 </div>
+                <div style="margin-top: 10px">
+                    <el-button icon="el-icon-edit" size="mini" @click="onlyEditor()"></el-button>
+                    <el-button icon="el-icon-view" size="mini" @click="onlyShower()"></el-button>
+                    <el-button icon="el-icon-reading" size="mini" @click="editorAndShower()"></el-button>
+                </div>
             </el-col>
         </el-row>
         <el-row style="margin-top: 10px">
-            <el-col :span="10" :offset="1" id="editor">
+            <el-col :span="layout.editor_span" :offset="layout.editor_offset" id="editor" v-show="editable">
                 <el-input
                         type="textarea"
                         placeholder="请输入内容"
@@ -21,7 +26,7 @@
                 >
                 </el-input>
             </el-col>
-            <el-col :span="10" :offset="1" id="shower">
+            <el-col :span="layout.shower_span" :offset="layout.editor_offset" id="shower" v-show="visual">
                 <el-input
                         type="textarea"
                         v-html="convertMarkdown(blog.context)"
@@ -45,6 +50,8 @@
   import {Converter} from 'showdown';
   import {ApiService} from "../js/apiService";
   import * as _ from "lodash";
+  // es modules
+  import Editor from '@tinymce/tinymce-vue';
 
   let converter = new Converter({tables: true});
   let apiService = new ApiService();
@@ -52,15 +59,26 @@
   let blogTmp = {};
   export default {
     name: "blog-add",
+    components: {
+      'editor': Editor
+    },
     data: function () {
       return {
         blog: {
           title: null,
           context: null,
-          author: null,
-          createTime: null,
+          author: "asa.x",
+          createTime: new Date(),
           id: null
         },
+        editable: true,
+        visual: false,
+        layout: {
+          editor_span: 20,
+          editor_offset: 1,
+          shower_span: 10,
+          shower_offset: 1
+        }
       }
     },
     methods: {
@@ -82,10 +100,14 @@
       },
 
       init() {
-        blogTmp = JSON.parse(this.$route.query.blog);
-        if (blogTmp) {
+        let blogStr = this.$route.query.blog;
+        if (blogStr) {
+          blogTmp = JSON.parse(blogStr);
           Object.assign(this.blog, blogTmp);
+          return;
         }
+        this.layout.editor_span = 20;
+        this.layout.shower_span = 0;
       },
       update() {
         let oldBlog = blogTmp;
@@ -102,7 +124,7 @@
           this.$router.push({
             path: '/blog-view',
             name: 'BlogView',
-            params: {
+            query: {
               blogId: oldBlog._id
             }
           })
@@ -111,6 +133,24 @@
           window.alert("update failed!");
         });
       },
+      onlyEditor() {
+        this.editable = true;
+        this.layout.editor_span = 20;
+        this.layout.shower_span = 0;
+        this.visual = false;
+      },
+      onlyShower() {
+        this.editable = false;
+        this.visual = true;
+        this.layout.editor_span = 0;
+        this.layout.shower_span = 20;
+      },
+      editorAndShower() {
+        this.editable = true;
+        this.visual = true;
+        this.layout.editor_span = 10;
+        this.layout.shower_span = 10;
+      }
     },
     mounted() {
       this.init()

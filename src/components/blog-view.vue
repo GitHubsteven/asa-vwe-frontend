@@ -7,7 +7,14 @@
                     <el-tag type="info">{{this.blog.author}}</el-tag>
                     <el-tag type="info">{{this.blog.createTime}}</el-tag>
                     <hr/>
-                    <div v-html="this.blog.context"></div>
+                    <el-input
+                            type="textarea"
+                            v-html="convertMarkdown(blog.context)"
+                            maxlength="3000"
+                            show-word-limit
+                            :autosize="{ minRows: 50, maxRows: 300 }"
+                    >
+                    </el-input>
                 </div>
             </el-col>
         </el-row>
@@ -23,7 +30,7 @@
   import {Converter} from 'showdown';
   import * as _ from "lodash"
 
-  const converter = new Converter();
+  const converter = new Converter({tables: true});
 
   export default {
     name: "blog-view",
@@ -55,9 +62,12 @@
         apiService.viewBlog(id).then(resp => {
           console.log(resp);
           _.extend(this.blog, resp);
-          this.blog.context = converter.makeHtml(resp.context);
         })
       },
+      convertMarkdown(context) {
+        return converter.makeHtml(context);
+      },
+
     },
     mounted() {
       this.init();

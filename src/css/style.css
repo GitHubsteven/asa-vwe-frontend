@@ -1,11 +1,11 @@
-h4{
+h4 {
     font-family: helvetica, serif;
     color: deepskyblue;
     background: ghostwhite;
 }
 
 /*.border-style {*/
-    /*border: 10px deepskyblue;*/
+/*border: 10px deepskyblue;*/
 /*}*/
 .part {
     display: inline-block;
@@ -15,6 +15,11 @@ h4{
 
 table, td, th {
     border: 1px solid black;
+}
+
+table {
+    min-width: 200px;
+    min-height: 50px;
 }
 
 .description {
@@ -28,16 +33,20 @@ table, td, th {
     background-size: 100% auto;
     background: url(../img/cat.jpg) no-repeat;
 }
-.footer_context{
+
+.footer_context {
     margin-left: 40%;
     margin-bottom: 1%;
 }
-.vwe_pagination{
+
+.vwe_pagination {
     margin-top: 1%;
 }
+
 html {
     height: 100%;
 }
+
 body {
     min-height: calc(95%);
 }

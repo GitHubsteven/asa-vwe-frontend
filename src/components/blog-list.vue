@@ -41,7 +41,7 @@
                                 </el-button>
                             </div>
                             <div class="text item">
-                                {{createSyllabus(blog.context)}}
+                                {{ConvertService.createSyllabus(blog.context)}}
                             </div>
                             <div class="text item">
                                 <el-tag type="info">测试</el-tag>
@@ -56,7 +56,7 @@
                         <el-pagination
                                 @size-change="handleSizeChange"
                                 @current-change="handleCurrentChange"
-                                :current-page="currentPage4"
+                                :current-page="currentPage1"
                                 :page-sizes="[10, 20, 50]"
                                 :page-size="100"
                                 layout="total, sizes, prev, pager, next, jumper"
@@ -73,12 +73,12 @@
 <script>
   //引入接口辅助类
   import {ApiService} from '../js/apiService.js'
+  import {ConvertService} from "../js/convertService";
   //定义一个对象
   const apiService = new ApiService();
   import {Converter} from 'showdown';
 
   let converter = new Converter({tables: true});
-  // import {ApiService as apiService} from "../js/apiSerivce";
 
   export default {
     name: "blog-list",
@@ -86,7 +86,7 @@
       return {
         blogs: [],
         blogNumber: 0,
-        currentPage1: 5,
+        currentPage1: 1,
         currentPage2: 5,
         currentPage3: 5,
         currentPage4: 4,
@@ -102,16 +102,9 @@
           this.blogNumber = resp.length;
         });
       },
-      convertMarkdown(context) {
-        return converter.makeHtml(context);
-      },
       //生成摘要
       createSyllabus(markdown) {
-        let wrapper = document.createElement("div");
-        wrapper.innerHTML = converter.makeHtml(markdown);
-        let text = wrapper.innerText;
-        let limit = text.length < 100 ? text.length : 100;
-        return text.substr(0, limit) + "...";
+        return ConvertService.createSyllabus(markdown);
       },
       detail(blog) {
         this.$router.push({
