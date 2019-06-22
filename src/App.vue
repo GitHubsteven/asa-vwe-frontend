@@ -8,9 +8,6 @@
                         <el-menu-item index="1">
                             <router-link to="/blog-list">我的博客</router-link>
                         </el-menu-item>
-                        <el-menu-item index="2">
-                            <router-link to="/joy">其他</router-link>
-                        </el-menu-item>
                     </el-menu>
                 </el-header>
                 <el-main>

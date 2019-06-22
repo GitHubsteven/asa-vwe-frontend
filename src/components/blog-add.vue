@@ -47,115 +47,114 @@
 </template>
 
 <script>
-  import {Converter} from 'showdown';
-  import {ApiService} from "../js/apiService";
-  import * as _ from "lodash";
-  // es modules
-  import Editor from '@tinymce/tinymce-vue';
+    import {ApiService} from "../js/apiService";
+    import {ConvertService} from "../js/convertService";
+    // es modules
+    import Editor from '@tinymce/tinymce-vue';
 
-  let converter = new Converter({tables: true});
-  let apiService = new ApiService();
+    let convertService = new ConvertService();
+    let apiService = new ApiService();
 
-  let blogTmp = {};
-  export default {
-    name: "blog-add",
-    components: {
-      'editor': Editor
-    },
-    data: function () {
-      return {
-        blog: {
-          title: null,
-          context: null,
-          author: "asa.x",
-          createTime: new Date(),
-          id: null
+    let blogTmp = {};
+    export default {
+        name: "blog-add",
+        components: {
+            'editor': Editor
         },
-        editable: true,
-        visual: false,
-        layout: {
-          editor_span: 20,
-          editor_offset: 1,
-          shower_span: 10,
-          shower_offset: 1
-        }
-      }
-    },
-    methods: {
-      create() {
-        apiService.createBlog(this.blog).then(res => {
-          if (!res._id) {
-            window.alert("res:" + res.message);
-          } else {
-            //页面跳转
-            this.$router.push({
-              path: '/blog-list',
-              name: 'BlogList'
-            })
-          }
-        })
-      },
-      convertMarkdown(context) {
-        return converter.makeHtml(context);
-      },
-
-      init() {
-        let blogStr = this.$route.query.blog;
-        if (blogStr) {
-          blogTmp = JSON.parse(blogStr);
-          Object.assign(this.blog, blogTmp);
-          return;
-        }
-        this.layout.editor_span = 20;
-        this.layout.shower_span = 0;
-      },
-      update() {
-        let oldBlog = blogTmp;
-        if (oldBlog.title === this.blog.title
-          && oldBlog.context === this.blog.context
-          && oldBlog.author === this.blog.author) {
-          window.alert("there is no change!");
-          return;
-        }
-        apiService.update(this.blog).then((resp) => {
-          if (!resp) {
-            window.alert("update failed!");
-          }
-          this.$router.push({
-            path: '/blog-view',
-            name: 'BlogView',
-            query: {
-              blogId: oldBlog._id
+        data: function () {
+            return {
+                blog: {
+                    title: null,
+                    context: null,
+                    author: "asa.x",
+                    createTime: new Date(),
+                    id: null
+                },
+                editable: true,
+                visual: false,
+                layout: {
+                    editor_span: 20,
+                    editor_offset: 1,
+                    shower_span: 10,
+                    shower_offset: 1
+                }
             }
-          })
-        }, (error) => {
-          console.log(error);
-          window.alert("update failed!");
-        });
-      },
-      onlyEditor() {
-        this.editable = true;
-        this.layout.editor_span = 20;
-        this.layout.shower_span = 0;
-        this.visual = false;
-      },
-      onlyShower() {
-        this.editable = false;
-        this.visual = true;
-        this.layout.editor_span = 0;
-        this.layout.shower_span = 20;
-      },
-      editorAndShower() {
-        this.editable = true;
-        this.visual = true;
-        this.layout.editor_span = 10;
-        this.layout.shower_span = 10;
-      }
-    },
-    mounted() {
-      this.init()
+        },
+        methods: {
+            create() {
+                apiService.createBlog(this.blog).then(res => {
+                    if (!res._id) {
+                        window.alert("res:" + res.message);
+                    } else {
+                        //页面跳转
+                        this.$router.push({
+                            path: '/blog-list',
+                            name: 'BlogList'
+                        })
+                    }
+                })
+            },
+            convertMarkdown(context) {
+                return convertService.makeHtml(context);
+            },
+
+            init() {
+                let blogStr = this.$route.query.blog;
+                if (blogStr) {
+                    blogTmp = JSON.parse(blogStr);
+                    Object.assign(this.blog, blogTmp);
+                    return;
+                }
+                this.layout.editor_span = 20;
+                this.layout.shower_span = 0;
+            },
+            update() {
+                let oldBlog = blogTmp;
+                if (oldBlog.title === this.blog.title
+                    && oldBlog.context === this.blog.context
+                    && oldBlog.author === this.blog.author) {
+                    window.alert("there is no change!");
+                    return;
+                }
+                apiService.update(this.blog).then((resp) => {
+                    if (!resp) {
+                        window.alert("update failed!");
+                    }
+                    this.$router.push({
+                        path: '/blog-view',
+                        name: 'BlogView',
+                        query: {
+                            blogId: oldBlog._id
+                        }
+                    })
+                }, (error) => {
+                    console.log(error);
+                    window.alert("update failed!");
+                });
+            },
+            onlyEditor() {
+                this.editable = true;
+                this.layout.editor_span = 20;
+                this.layout.shower_span = 0;
+                this.visual = false;
+            },
+            onlyShower() {
+                this.editable = false;
+                this.visual = true;
+                this.layout.editor_span = 0;
+                this.layout.shower_span = 20;
+            },
+            editorAndShower() {
+                this.editable = true;
+                this.visual = true;
+                this.layout.editor_span = 10;
+                this.layout.shower_span = 10;
+            }
+        },
+        mounted() {
+            this.init()
+        }
     }
-  }
 </script>
 
 <style type="text/css" scoped>
