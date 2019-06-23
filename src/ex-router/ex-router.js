@@ -1,23 +1,49 @@
 /* eslint-disable no-console */
 let express = require('express');
 let BlogModel = require('../models/Blog.js');
+let CommentModel = require('../models/Comment');
 let router = express.Router();
 
 module.exports = router;
 
-router.all((req, res, next) => {
+router.all("/*", (req, res, next) => {
     console.log("request receive time: " + new Date().toDateString());
     next();
 });
 
-router.get('/blog-list', (req, res) => {
-    BlogModel.find((err, blogs) => {
+router.post('/blog-list', (req, res) => {
+    let params = {};
+    let searchOpt = req.body;
+    console.log(req.body);
+    if (searchOpt.title) {
+        params = {
+            title: {$regex: searchOpt.title}
+        };
+    }
+    let data = {
+        count: 0,
+        items: []
+    };
+    BlogModel.estimatedDocumentCount(params, (err, count) => {
         if (err) {
-            console.log(err);
+            return res.status(500);
         } else {
-            res.json(blogs);
+            data.count = count;
+
+            BlogModel.find(params)
+                .skip((searchOpt.curPage - 1) * searchOpt.pageSize)
+                .limit(searchOpt.pageSize)
+                .exec((err, blogs) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500);
+                    } else {
+                        data.items = blogs;
+                        res.json(data);
+                    }
+                });
         }
-    });
+    })
 });
 
 router.get('/blog-view/:id', (req, res) => {
@@ -61,3 +87,35 @@ router.route("/blog-update/:id").put((req, res) => {
         }
     })
 });
+
+/**
+ * 根据blogId获取blog下的所有评论
+ */
+router.get("/blog-comments/:blogId", (req, resp) => {
+    CommentModel.find({blogId: req.params.blogId}, (err, comments) => {
+        if (err) {
+            return resp.status(500).json(err);
+        } else {
+            return resp.json(comments);
+        }
+    });
+});
+/**
+ * 添加博客评论
+ */
+router.post("/comments-create/", (req, resp) => {
+    let requestBody = req.body;
+    console.log(requestBody);
+    let comment = new CommentModel();
+    if (!requestBody) {
+        return resp.status(200).json("comment不能为空")
+    }
+    Object.assign(comment, requestBody);
+    comment.save().then((com) => {
+        return resp.json(com);
+    }).catch((err) => {
+        console.log(err);
+        return resp.status(500).json(err);
+    })
+});
+

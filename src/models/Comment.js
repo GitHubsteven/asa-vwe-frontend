@@ -4,7 +4,9 @@ let Schema = mongoose.Schema;
 let CommentSchema = new Schema({
     author: String,
     context: String,
+    blogId: String,
     email: String,
+    refId: String,
     createTime: {type: Date, default: Date.now},
 });
 

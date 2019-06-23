@@ -9,9 +9,9 @@ export class ApiService {
     }
 
 //定义一个方法查询
-    getBlogs() {
+    getBlogs(searchOpt) {
         const url = `${API_URL}/blog-list/`;
-        return axios.get(url).then((res) => res.data);
+        return axios.post(url, searchOpt).then((res) => res.data);
     }
 
     //查询

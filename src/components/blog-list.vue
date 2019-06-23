@@ -60,7 +60,7 @@
                                 :page-sizes="[10, 20, 50]"
                                 :page-size="searchers.pageSize"
                                 layout="total, sizes, prev, pager, next, jumper"
-                                :total="blogNumber">
+                                :total="count">
                         </el-pagination>
                     </el-col>
                 </el-row>
@@ -83,7 +83,7 @@
         data() {
             return {
                 blogs: [],
-                blogNumber: 0,
+                count: 0,
                 searchers: {
                     title: null,
                     curPage: 1,
@@ -95,9 +95,10 @@
         methods: {
             getBlogs(searchOpt) {
                 //调用接口获取数据，并且更新vue页面数据
-                apiService.getBlogs().then((resp) => {
-                    this.blogs = resp;
-                    this.blogNumber = resp.length;
+                apiService.getBlogs(searchOpt).then((resp) => {
+                    console.log(resp);
+                    this.blogs = resp.items;
+                    this.count = resp.count;
                 });
             },
             /**
@@ -157,13 +158,15 @@
                 })
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.searchers.pageSize = val;
+                this.searchBlogs();
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.searchers.curPage = val;
+                this.searchBlogs();
             },
             searchBlogs() {
-                window.alert("search and update blogs!");
+                this.getBlogs(this.searchers);
             }
         },
         //在vue被渲染的时候调用方法
