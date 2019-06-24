@@ -59,34 +59,7 @@
             <el-col :span="7" :offset="8">
                 <div class="grid-content bg-purple-light">
                     <div v-for="com in blogComments" v-bind:key="com.id">
-                        <el-card class="box-card" body-style="{ padding: '10px',margin-top:10px }"
-                                 style="margin-top: 10px;">
-                            <div slot="header" class="clearfix">
-                                <el-tag type="info">{{com.author}}</el-tag>
-                                <el-tag type="info">{{com.createTime == null ? "null" :com.createTime.substring(0,19)}}
-                                </el-tag>
-                                <el-button style="float: right; padding: 3px 2px;color: red" type="text"
-                                           @click="reportComment(com)">
-                                    举报
-                                </el-button>
-                                <el-button style="float: right; padding: 3px 2px;color: red" type="text"
-                                           @click="delComment(com)">
-                                    删除
-                                </el-button>
-                                <el-button style="float: right; padding: 3px 2px;" type="text"
-                                           @click="refComment(com)">
-                                    引用
-                                </el-button>
-                            </div>
-                            <div class="text item">
-                                {{com.context}}
-                                <el-button v-show="isHasRefComment(com.refId)" style="float: right; padding: 3px 2px;"
-                                           type="text"
-                                           @click="getRefComments(com)">
-                                    已引用评论
-                                </el-button>
-                            </div>
-                        </el-card>
+                        <comment com="com"></comment>
                     </div>
                     <!--引用评论-->
                     <el-dialog :before-close="cancelRefCmdDialog"
@@ -134,6 +107,7 @@
 
     export default {
         name: "blog-view",
+        components: [Comment],
         data() {
             return {
                 blog: {
@@ -165,8 +139,47 @@
                     _id: null,
                     context: null,
                     author: null
+                },
+                data: [{
+                    label: '一级 1',
+                    children: [{
+                        label: '二级 1-1',
+                        children: [{
+                            label: '三级 1-1-1'
+                        }]
+                    }]
+                }, {
+                    label: '一级 2',
+                    children: [{
+                        label: '二级 2-1',
+                        children: [{
+                            label: '三级 2-1-1'
+                        }]
+                    }, {
+                        label: '二级 2-2',
+                        children: [{
+                            label: '三级 2-2-1'
+                        }]
+                    }]
+                }, {
+                    label: '一级 3',
+                    children: [{
+                        label: '二级 3-1',
+                        children: [{
+                            label: '三级 3-1-1'
+                        }]
+                    }, {
+                        label: '二级 3-2',
+                        children: [{
+                            label: '三级 3-2-1'
+                        }]
+                    }]
+                }],
+                defaultProps: {
+                    children: 'children',
+                    label: 'label'
                 }
-            }
+            };
         },
         methods: {
             init() {
@@ -254,6 +267,9 @@
             },
             isHasRefComment(refId) {
                 return !!refId;
+            },
+            handleNodeClick(data) {
+                console.log(data);
             }
         },
         mounted() {
