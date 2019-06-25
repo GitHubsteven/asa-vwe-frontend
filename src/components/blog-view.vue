@@ -96,9 +96,9 @@
 <script>
   //引入接口辅助类
   import {ApiService} from '../js/apiService.js'
-  import {ConvertService} from "../js/convertService";
   import {AxiosService} from "../js/axiosService";
-  // import BlogComment from "./blog-comment.vue"
+  import {ConvertService} from "../js/convertService";
+  import BlogComment from "./blog-comment.vue"
   //定义一个对象
   const apiService = new ApiService();
   let axiosService = new AxiosService();
@@ -108,9 +108,9 @@
 
   export default {
     name: "blog-view",
-    // components: {
-    //   "blog-comment": BlogComment
-    // },
+    components: {
+      "blog-comment": BlogComment
+    },
     data() {
       return {
         blog: {
@@ -156,10 +156,6 @@
           this.$alert('没有id', '警告', {
             confirmButtonText: '确定',
             callback: action => {
-              // this.$message({
-              //   type: 'info',
-              //   message: `action: ${ action }`
-              // });
               //do nothing!
             }
           });
@@ -185,6 +181,7 @@
               context: "subComment context",
               createTime: "2019-06-25 11:16:00:123"
             };
+            subComments.push(subComment);
             subComments.push(subComment);
             bc.subComments = subComments;
           })

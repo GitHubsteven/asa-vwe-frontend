@@ -6,13 +6,6 @@
                 <strong>{{commentObj.author}}:</strong> {{commentObj.context}}
                 <el-tag type="info">{{commentObj.createTime == null ? "null" :commentObj.createTime.substring(0,19)}}
                 </el-tag>
-                <el-button v-show="commentObj.subComments !=null && commentObj.subComments.length>0"
-                           style="float: right; padding: 3px 2px;"
-                           type="text"
-                           @click="getRefComments()">
-                    已引用评论
-                </el-button>
-                <blog-comment v-for="ele in commentObj.subComments" v-bind:key="ele.author" v-bind:commentObj="ele"></blog-comment>
                 <el-button style="float: right; padding: 3px 2px;color: red" type="text"
                            @click="reportComment()">
                     举报
@@ -25,32 +18,53 @@
                            @click="refComment()">
                     引用
                 </el-button>
+                <el-button
+                        v-show="commentObj.subComments !=null && commentObj.subComments.length>0"
+                        style="float: right; padding: 3px 2px;"
+                        type="text"
+                        @click="isShowAttachComments = !isShowAttachComments">
+                    已引用评论
+                </el-button>
+                <div v-show="isShowAttachComments">
+                    <blog-comment v-for="ele in commentObj.subComments" v-bind:key="ele.author"
+                                  v-bind:commentObj="ele"></blog-comment>
+                </div>
+
             </div>
         </el-card>
     </div>
 </template>
 
 <script>
-  export default {
-    name: "blog-comment",
-    props: {
-      commentObj: {
-        author: "asa.x",
-        createTime: "2019-06-24 13:14:15",
-        subComments: []
-      }
-    },
-    methods: {
-      getRefComments() {
-      },
-      reportComment() {
-      },
-      delComment() {
-      },
-      refComment() {
-      }
+    import {AxiosService} from "../js/axiosService";
+
+    let axiosService = new AxiosService();
+
+    export default {
+        name: "blog-comment",
+        props: {
+            commentObj: {
+                author: "asa.x",
+                createTime: "2019-06-24 13:14:15",
+                subComments: []
+            }
+        },
+        data() {
+            return {
+                isShowAttachComments: false
+            }
+        },
+        methods: {
+            getRefComments() {
+            },
+            reportComment() {
+            },
+            delComment() {
+            },
+            refComment() {
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>
