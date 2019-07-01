@@ -174,17 +174,6 @@
         if (blogId == null) blogId = this.$route.query.blogId;
         axiosService.get("/blog-comments/" + blogId).then(resp => {
           this.blogComments = resp;
-          this.blogComments.forEach(bc => {
-            let subComments = [];
-            let subComment = {
-              author: "asa.x",
-              context: "subComment context",
-              createTime: "2019-06-25 11:16:00:123"
-            };
-            subComments.push(subComment);
-            subComments.push(subComment);
-            bc.subComments = subComments;
-          })
         });
       },
       convertMarkdown(context) {
@@ -195,6 +184,9 @@
        * @param comment
        */
       submitComment(comment) {
+        if(!comment.email || !comment.context){
+          windows.alert("邮箱和评论不能为空！");
+        }
         axiosService.post("/comments-create/", comment).then((resp) => {
           if (resp._id) {
             //表示成功
