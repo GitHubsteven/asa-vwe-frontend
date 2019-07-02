@@ -42,16 +42,6 @@
                             <p>{{commentObj.context}}</p>
                         </div>
                         <el-form-item
-                                prop="email"
-                                label="邮箱"
-                                :rules="[
-                          { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-                          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-                        ]"
-                        >
-                            <el-input v-model="comment.email"></el-input>
-                        </el-form-item>
-                        <el-form-item
                                 label="评论"
                                 prop="context"
                                 :rules="{
@@ -77,45 +67,79 @@
 </template>
 
 <script>
-  import {AxiosService} from "../js/axiosService";
+    import {AxiosService} from "../js/axiosService";
+    import {ConvertService} from "../js/convertService";
 
-  let axiosService = new AxiosService();
+    let axiosService = new AxiosService();
+    let convertService = new ConvertService();
 
-  export default {
-    name: "blog-comment",
-    props: {
-      commentObj: {
-        author: "asa.x",
-        createTime: "2019-06-24 13:14:15",
-        context: null,
-        subComments: []
-      }
-    },
-    data() {
-      return {
-        isShowAttachComments: false,
-        commentFormVisible: false,
-        comment: {
-          email: null,
-          context: null
+    export default {
+        name: "blog-comment",
+        props: {
+            commentObj: {
+                author: "asa.x",
+                createTime: "2019-06-24 13:14:15",
+                context: null,
+                subComments: [],
+                _id: null
+            }
+        },
+        data() {
+            return {
+                isShowAttachComments: false,
+                commentFormVisible: false,
+                comment: {
+                    email: null,
+                    context: null,
+                    author: "asa-x",
+                    refId: null
+                }
+            }
+        },
+        methods: {
+            getRefComments() {
+            },
+            reportComment() {
+            },
+            delComment() {
+            },
+            refComment() {
+                this.commentFormVisible = true;
+            },
+            submitComment(comment) {
+                if (!comment.context) {
+                    window.alert("邮箱和评论不能为空！");
+                    return;
+                }
+                comment.email = "ref comment@asa.com";
+                comment.refId = this.refCommentObj._id;
+                comment.author = "asa.x";
+                axiosService.post("/comments-create/", comment).then((resp) => {
+                    if (resp && resp._id) {
+                        console.log(resp);
+                        //表示成功
+                        this.$notify({
+                            title: '成功',
+                            message: "保存成功",
+                            type: 'success'
+                        });
+                        convertService.clearObjVal(this.comment);
+                        this.isShowAttachComments = false;
+                        // this.getComments(this.$route.query.blogId);
+                    } else {
+                        //表示失败
+                        this.$notify({
+                            title: '失败',
+                            message: '保存失败！',
+                            type: 'warning'
+                        });
+                        console.log(resp);
+                        this.isShowAttachComments = false;
+                    }
+                })
+            }
         }
-      }
-    },
-    methods: {
-      getRefComments() {
-      },
-      reportComment() {
-      },
-      delComment() {
-      },
-      refComment() {
-        this.commentFormVisible = true;
-      },
-      submitComment() {
-        window.alert("提交代码");
-      }
     }
-  }
 </script>
 
 <style scoped>
