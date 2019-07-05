@@ -93,7 +93,8 @@
                     context: null,
                     author: "asa-x",
                     refId: null
-                }
+                },
+                commentTmp: this.commentObj
             }
         },
         methods: {
@@ -112,7 +113,11 @@
                     return;
                 }
                 comment.email = "ref comment@asa.com";
-                comment.refId = this.refCommentObj._id;
+                comment.refId = this.commentTmp._id;
+                if (!refId) {
+                    window.alert("refId is blank!");
+                    return;
+                }
                 comment.author = "asa.x";
                 axiosService.post("/comments-create/", comment).then((resp) => {
                     if (resp && resp._id) {
@@ -137,6 +142,13 @@
                         this.isShowAttachComments = false;
                     }
                 })
+            }
+        },
+        watch: {
+            commentObj: function (oldValue, newValue) {
+                if (!oldValue._id && newValue._id) {
+                    Object.assign(this.commentTmp, newValue);
+                }
             }
         }
     }
