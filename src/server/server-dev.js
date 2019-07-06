@@ -9,6 +9,7 @@ let createError = require('http-errors');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 import router from '../ex-router/ex-router';
+import userRouter from '../ex-router/user-router';
 
 //链接数据库
 let bodyParser = require('body-parser');
@@ -44,6 +45,7 @@ app.use(cors());
 // app.use(logger('dev'));
 app.use(cookieParser());
 app.use(router);
+app.use(userRouter);
 
 app.use(webpackHotMiddleware(compiler, {
   noInfo: false,

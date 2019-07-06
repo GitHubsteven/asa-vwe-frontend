@@ -6,7 +6,8 @@
   "scripts": {
     "buildDev": "DEL /F /Q dist  & webpack --mode development --config webpack.server.config.js & webpack --mode development --config webpack.dev.config.js",
     "buildProd": "DEL /F /Q dist & webpack --mode production --config webpack.server.config.js & webpack --mode production --config webpack.prod.config.js ",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "debug": "set DEBUG=express:* & node ./dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -42,8 +43,9 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
-    "debug": "~2.6.9",
+    "debug": "^2.6.9",
     "eslint": "^5.16.0",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-react": "^7.12.4",
