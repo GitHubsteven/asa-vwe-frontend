@@ -104,7 +104,7 @@ router.get("/blog-comments/:blogId", (req, resp) => {
 });
 
 router.get("/comment-getSubs/:blogId/:commentId", (req, resp) => {
-  CommentModel.find({blogId: req.param.blogId, refId: req.param.refId})
+  CommentModel.find({blogId: req.params.blogId, refId: req.params.refId})
     .then((subs, err) => {
       if (err) {
         resp.status(500).json(err);
