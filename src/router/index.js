@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import BlogList from '../components/blog-list.vue'
 import BlogView from '../components/blog-view.vue'
 import BlogAdd from '../components/blog-add.vue'
-import Joy from '../components/joy.vue'
+import UserLogin from "../components/user/user-login.vue"
+import UserRegister from "../components/user/user-register.vue"
 
 Vue.use(Router);
 
@@ -25,9 +26,14 @@ export default new Router({
       component: BlogAdd
     },
     {
-      path: '/joy',
-      name: 'Joy',
-      component: Joy
-    }
+      path: '/user-login',
+      name: 'UserLogin',
+      component: UserLogin
+    },
+    {
+      path: '/user-register',
+      name: 'UserRegister',
+      component: UserRegister
+    },
   ]
 })

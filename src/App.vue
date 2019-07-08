@@ -3,10 +3,13 @@
         <div>
             <el-container style="height: 100%; min-height: 700px">
                 <el-header>
-                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router
                              @select="handleSelect">
-                        <el-menu-item index="1">
-                            <router-link to="/blog-list">我的博客</router-link>
+                        <el-menu-item index="/blog-list">
+                            我的博客
+                        </el-menu-item>
+                        <el-menu-item index="/user-login" style="float: right">
+                            登录
                         </el-menu-item>
                     </el-menu>
                 </el-header>
@@ -30,7 +33,7 @@
     },
     data() {
       return {
-        activeIndex: '1',
+        activeIndex: '/blog-list',
       };
     },
     methods: {

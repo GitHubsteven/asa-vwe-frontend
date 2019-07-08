@@ -15,6 +15,7 @@ router.post('/blog-list', (req, res) => {
   let params = {};
   let searchOpt = req.body;
   console.log(req.body);
+  //增加按照名称来过滤的条件
   if (searchOpt.title) {
     params = {
       title: {$regex: searchOpt.title}
@@ -24,12 +25,13 @@ router.post('/blog-list', (req, res) => {
     count: 0,
     items: []
   };
+  //先找出符合条件的所有数量
   BlogModel.estimatedDocumentCount(params, (err, count) => {
     if (err) {
       return res.status(500);
     } else {
       data.count = count;
-
+      //在按页来查找数量
       BlogModel.find(params)
         .skip((searchOpt.curPage - 1) * searchOpt.pageSize)
         .limit(searchOpt.pageSize)
