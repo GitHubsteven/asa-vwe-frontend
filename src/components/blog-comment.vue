@@ -29,7 +29,7 @@
                     已引用评论
                 </el-button>
                 <div v-show="isShowAttachComments" style="margin-top: 40px">
-                    <blog-comment v-for="ele in commentObj.subComments" v-bind:key="ele.author"
+                    <blog-comment v-for="ele in commentObj.subComments" v-bind:key="ele._id"
                                   v-bind:commentObj="ele"></blog-comment>
                 </div>
                 <el-dialog title="评论区" :visible.sync="commentFormVisible">
@@ -99,9 +99,13 @@
     },
     methods: {
       getRefComments() {
-        axiosService.get("/comment-getSubs").then(subComments => {
 
-        })
+      },
+      getSubComments(comment) {
+        axiosService.get("/comment-getSubs/" + comment.blogId + "/" + comment._id)
+          .then(subComments => {
+            comment.subComments = convertService.divideComment2(subComments, comment._id);
+          });
       },
       reportComment() {
       },
@@ -128,6 +132,7 @@
           this.commentFormVisible = false;
           if (resp && resp._id) {
             //表示成功
+            this.getSubComments(this.commentObj);
             this.$notify({
               title: '成功',
               message: "保存成功",

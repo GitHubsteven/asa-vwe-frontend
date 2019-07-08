@@ -103,8 +103,27 @@ router.get("/blog-comments/:blogId", (req, resp) => {
   });
 });
 
+/**
+ * 添加博客评论
+ */
+router.post("/comments-create/", (req, resp) => {
+  let requestBody = req.body;
+  console.log(requestBody);
+  let comment = new CommentModel();
+  if (!requestBody) {
+    return resp.status(200).json("comment不能为空")
+  }
+  Object.assign(comment, requestBody);
+  comment.save().then((com) => {
+    return resp.json(com);
+  }).catch((err) => {
+    console.log(err);
+    return resp.status(500).json(err);
+  })
+});
+
 router.get("/comment-getSubs/:blogId/:commentId", (req, resp) => {
-  CommentModel.find({blogId: req.params.blogId, refId: req.params.refId})
+  CommentModel.find({blogId: req.params.blogId, refId: req.params.commentId})
     .then((subs, err) => {
       if (err) {
         resp.status(500).json(err);

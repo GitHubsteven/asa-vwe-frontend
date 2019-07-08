@@ -44,4 +44,52 @@ export class ConvertService {
     }
     return true;
   }
+
+  /**
+   * 对数组进行分组
+   *
+   * @param list 数组
+   * @param keyGetter 分组的key
+   * @returns {Map<any, any>} es6的map
+   */
+  groupBy(list, keyGetter) {
+    const map = new Map();
+    list.forEach((item) => {
+      const key = keyGetter(item);
+      const collection = map.get(key);
+      if (!collection) {
+        map.set(key, [item]);
+      } else {
+        collection.push(item);
+      }
+    });
+    return map;
+  }
+
+  /**
+   * 分组评论
+   *
+   * @param comments 所有评论集合
+   * @returns {any}
+   */
+  divideComment(comments) {
+    return this.divideComment2(comments, null);
+  }
+
+  divideComment2(comments, firstLayer) {
+    if (comments.length === 0) return comments;
+    let refIds2CommentsMap = this.groupBy(comments, (ele) => ele.refId);
+    let firstLayerComments = refIds2CommentsMap.get(firstLayer || null);
+    for (let refId of refIds2CommentsMap.keys()) {
+      if (!refId || refId === "null") continue;
+      let refIdComments = comments.filter(item => {
+        return refId === item._id;
+      });
+      let parentComment = refIdComments[0];
+      if (parentComment) {
+        parentComment.subComments = refIds2CommentsMap.get(refId) || [];
+      }
+    }
+    return firstLayerComments;
+  }
 }

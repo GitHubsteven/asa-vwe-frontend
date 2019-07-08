@@ -173,7 +173,7 @@
       getComments(blogId) {
         if (blogId == null) blogId = this.$route.query.blogId;
         axiosService.get("/blog-comments/" + blogId).then(resp => {
-          this.blogComments = this.divideComment(resp);
+          this.blogComments = convertService.divideComment(resp);
         });
       },
       convertMarkdown(context) {
@@ -185,7 +185,7 @@
        */
       submitComment(comment) {
         if (!comment.email || !comment.context) {
-          windows.alert("邮箱和评论不能为空！");
+          window.alert("邮箱和评论不能为空！");
           return;
         }
         axiosService.post("/comments-create/", comment).then((resp) => {
@@ -240,36 +240,7 @@
       handleNodeClick(data) {
         console.log(data);
       },
-      groupBy(list, keyGetter) {
-        const map = new Map();
-        list.forEach((item) => {
-          const key = keyGetter(item);
-          const collection = map.get(key);
-          if (!collection) {
-            map.set(key, [item]);
-          } else {
-            collection.push(item);
-          }
-        });
-        return map;
-      },
 
-      divideComment(comments) {
-        if (comments.length === 0) return;
-        let refIds2CommentsMap = this.groupBy(comments, (ele) => ele.refId);
-        let firstLayerComments = refIds2CommentsMap.get(null);
-        for (let refId of refIds2CommentsMap.keys()) {
-          if (!refId || refId === "null") continue;
-          let refIdComments = firstLayerComments.filter(item => {
-            return refId === item._id;
-          });
-          let parentComment = refIdComments[0];
-          if (parentComment) {
-            parentComment.subComments = refIds2CommentsMap.get(refId) || [];
-          }
-        }
-        return firstLayerComments;
-      }
     },
     mounted() {
       this.init();
