@@ -15,7 +15,7 @@ import userRouter from '../ex-router/user-router';
 let bodyParser = require('body-parser');
 let cors = require('cors');
 let mongoose = require('mongoose');
-
+let session = require('express-session');
 
 const app = express(),
   DIST_DIR = __dirname,
@@ -44,6 +44,15 @@ app.use(cors());
 
 // app.use(logger('dev'));
 app.use(cookieParser());
+// 使用 session 中间件
+app.use(session({
+  secret :  'secret', // 对session id 相关的cookie 进行签名
+  resave : true,
+  saveUninitialized: false, // 是否保存未初始化的会话
+  cookie : {
+    maxAge : 1000 * 60 * 3, // 设置 session 的有效时间，单位毫秒
+  },
+}));
 app.use(router);
 app.use(userRouter);
 
