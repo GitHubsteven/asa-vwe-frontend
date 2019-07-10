@@ -7,7 +7,8 @@ let router = express.Router();
 module.exports = router;
 
 router.all("/*", (req, res, next) => {
-  console.log("request receive time: " + new Date().toDateString());
+  console.log("request receive session: " + JSON.stringify(req.session));
+  console.log("request receive cookie: " + JSON.stringify(req.cookies));
   next();
 });
 
