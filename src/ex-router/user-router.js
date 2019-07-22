@@ -47,6 +47,8 @@ userRouter.post("/user-login", (req, res) => {
         req.session.pass = user.pass;
         req.session.name = user.name;
         req.session._id = user._id;
+        res.cookie("username", user.name);
+        res.cookie("userId", user._id);
         let sessionBean = new SessionModel();
         sessionBean.content = JSON.stringify(req.session);
         sessionBean.sessionId = req.session.id;

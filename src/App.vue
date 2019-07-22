@@ -8,8 +8,11 @@
                         <el-menu-item index="/blog-list">
                             我的博客
                         </el-menu-item>
-                        <el-menu-item index="/user-login" style="float: right">
+                        <el-menu-item v-if="username == null" index="/user-login" style="float: right">
                             登录
+                        </el-menu-item>
+                        <el-menu-item v-if="username != null" style="float: right">
+                            <el-link onclick="loginOut()">退出</el-link>
                         </el-menu-item>
                     </el-menu>
                 </el-header>
@@ -25,6 +28,9 @@
 
 <script>
   import router from './router/index.js'
+  import {UserService} from "./js/userService";
+
+  let userService = new UserService();
 
   export default {
     name: "App",
@@ -34,14 +40,19 @@
     data() {
       return {
         activeIndex: '/blog-list',
+        username: this.store.username
       };
     },
     methods: {
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
-      }
+      },
+      loginOut() {
+        alert("确定要退出吗？");
+        this.store.commit("setUsername(null)");
+      },
     },
-    router
+    router,
   }
 </script>
 

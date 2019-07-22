@@ -32,11 +32,6 @@
                 </el-form>
             </el-col>
         </el-row>
-        <el-row>
-            <el-col :span="8" :offset="8">
-                <el-tag type="info"><%=email%></el-tag>
-            </el-col>
-        </el-row>
     </div>
 </template>
 
@@ -52,7 +47,8 @@
         userLoginForm: {
           email: '',
           pass: ''
-        }
+        },
+        username: this.$store.username
       };
     },
     methods: {
