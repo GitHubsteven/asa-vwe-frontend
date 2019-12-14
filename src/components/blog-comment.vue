@@ -39,7 +39,7 @@
                             <el-tag type="info">回复<span class="el-icon-caret-right"></span>
                                 {{commentObj.author}}
                             </el-tag>
-                            <p>{{commentObj.context}}</p>
+                            <p>{{commentObj.content}}</p>
                         </div>
                         <el-form-item
                                 label="评论"

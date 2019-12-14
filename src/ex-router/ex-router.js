@@ -12,7 +12,7 @@ router.all("/*", (req, res, next) => {
   next();
 });
 
-router.post('/blog-list', (req, res) => {
+router.post('/blog/list', (req, res) => {
   let params = {};
   let searchOpt = req.body;
   console.log(req.body);

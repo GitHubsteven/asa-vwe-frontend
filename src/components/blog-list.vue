@@ -41,7 +41,7 @@
                                 </el-button>
                             </div>
                             <div class="text item">
-                                {{createSyllabus(blog.context)}}
+                                {{createSyllabus(blog.content)}}
                             </div>
                             <div class="text item">
                                 <el-tag type="info">测试</el-tag>
@@ -71,109 +71,108 @@
 </template>
 
 <script>
-    //引入接口辅助类
-    import {ApiService} from '../js/apiService.js'
-    import {ConvertService} from "../js/convertService";
-    //定义一个对象
-    const apiService = new ApiService();
-    let convertService = new ConvertService();
+  //引入接口辅助类
+  import {ApiService} from '../js/apiService.js'
+  import {ConvertService} from "../js/convertService";
+  //定义一个对象
+  const apiService = new ApiService();
+  let convertService = new ConvertService();
 
-    export default {
-        name: "blog-list",
-        data() {
-            return {
-                blogs: [],
-                count: 0,
-                searchers: {
-                    title: null,
-                    curPage: 1,
-                    pageSize: 10
-                }
-            }
-        },
-        //定义方法
-        methods: {
-            getBlogs(searchOpt) {
-                //调用接口获取数据，并且更新vue页面数据
-                apiService.getBlogs(searchOpt).then((resp) => {
-                    console.log(resp);
-                    this.blogs = resp.items;
-                    this.count = resp.count;
-                });
-            },
-            /**
-             * 生成摘要
-             * @param markdown
-             * @returns {string}
-             */
-            createSyllabus(markdown) {
-                let wrapper = document.createElement("div");
-                wrapper.innerHTML = convertService.makeHtml(markdown);
-                let text = wrapper.innerText;
-                let limit = text.length < 100 ? text.length : 100;
-                return text.substr(0, limit) + "...";
-            },
-            /**
-             * 博客详情
-             *
-             * @param blog
-             */
-            detail(blog) {
-                this.$router.push({
-                    path: '/blog-view',
-                    name: 'BlogView',
-                    query: {
-                        blogId: blog._id
-                    }
-                })
-            },
-            /**
-             * 删除博客
-             * @param blog
-             */
-            del(blog) {
-                this.$confirm('确定要删除这条博客吗?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    apiService.delBlog(blog._id).then(resp => {
-                        if (resp) {
-                            this.getBlogs();
-                        } else {
-                            window.alert("blank resp");
-                        }
-                    })
-                }).catch(() => {
-                    //console.log("cancel the confirm")
-                });
-            },
-            update(blog) {
-                this.$router.push({
-                    path: "/blog-add",
-                    name: "BlogAdd",
-                    query: {
-                        blog: JSON.stringify(blog)
-                    }
-                })
-            },
-            handleSizeChange(val) {
-                this.searchers.pageSize = val;
-                this.searchBlogs();
-            },
-            handleCurrentChange(val) {
-                this.searchers.curPage = val;
-                this.searchBlogs();
-            },
-            searchBlogs() {
-                this.getBlogs(this.searchers);
-            }
-        },
-        //在vue被渲染的时候调用方法
-        mounted() {
-            this.getBlogs(this.searchers);
+  export default {
+    name: "blog-list",
+    data() {
+      return {
+        blogs: [],
+        count: 0,
+        searchers: {
+          title: null,
+          curPage: 1,
+          pageSize: 10
         }
+      }
+    },
+    //定义方法
+    methods: {
+      getBlogs(searchOpt) {
+        //调用接口获取数据，并且更新vue页面数据
+        apiService.listBlogs(searchOpt).then((resp) => {
+          this.blogs = resp;
+          this.count = resp.count;
+        });
+      },
+      /**
+       * 生成摘要
+       * @param markdown
+       * @returns {string}
+       */
+      createSyllabus(markdown) {
+        let wrapper = document.createElement("div");
+        wrapper.innerHTML = convertService.makeHtml(markdown);
+        let text = wrapper.innerText;
+        let limit = text.length < 100 ? text.length : 100;
+        return text.substr(0, limit) + "...";
+      },
+      /**
+       * 博客详情
+       *
+       * @param blog
+       */
+      detail(blog) {
+        this.$router.push({
+          path: '/blog-view',
+          name: 'BlogView',
+          query: {
+            blogId: blog._id ? blog._id : blog.id
+      }
+      })
+      },
+      /**
+       * 删除博客
+       * @param blog
+       */
+      del(blog) {
+        this.$confirm('确定要删除这条博客吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          apiService.delBlog(blog._id).then(resp => {
+            if (resp) {
+              this.getBlogs();
+            } else {
+              window.alert("blank resp");
+            }
+          })
+        }).catch(() => {
+          //console.log("cancel the confirm")
+        });
+      },
+      update(blog) {
+        this.$router.push({
+          path: "/blog-add",
+          name: "BlogAdd",
+          query: {
+            blog: JSON.stringify(blog)
+          }
+        })
+      },
+      handleSizeChange(val) {
+        this.searchers.pageSize = val;
+        this.searchBlogs();
+      },
+      handleCurrentChange(val) {
+        this.searchers.curPage = val;
+        this.searchBlogs();
+      },
+      searchBlogs() {
+        this.getBlogs(this.searchers);
+      }
+    },
+    //在vue被渲染的时候调用方法
+    mounted() {
+      this.getBlogs(this.searchers);
     }
+  }
 </script>
 
 <style scoped>

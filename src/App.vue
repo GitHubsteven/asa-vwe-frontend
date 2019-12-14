@@ -28,9 +28,6 @@
 
 <script>
   import router from './router/index.js'
-  import {UserService} from "./js/userService";
-
-  let userService = new UserService();
 
   export default {
     name: "App",
@@ -40,7 +37,7 @@
     data() {
       return {
         activeIndex: '/blog-list',
-        username: this.store.username
+        username: this.store ? this.store.username : "asa.x"
       };
     },
     methods: {
