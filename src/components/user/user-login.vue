@@ -48,7 +48,7 @@
           email: '',
           pass: ''
         },
-        username: this.$store.username
+        username: ''
       };
     },
     methods: {
@@ -57,7 +57,15 @@
           if (valid) {
             axiosService.post("/user-login", this.userLoginForm).then((resp) => {
               if (resp._id) {
-                alert("login success!");
+                resp['username'] = resp.name;
+                setTimeout(() => {
+                  // this.$store.commit('setUser', resp);
+                  localStorage.setItem("user", JSON.stringify(resp));
+                  this.$router.push({
+                    path: '/blog-list',
+                    name: 'BlogList',
+                  })
+                }, 1000)
               } else {
                 alert(resp.message || "login failed!");
               }

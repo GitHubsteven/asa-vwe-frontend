@@ -94,12 +94,19 @@
     },
     methods: {
       submitForm(formName) {
+        let main = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
             axiosService.post("/user-register", this.register).then(resp => {
               //如果_id存在的话，那么就是注册成功了
               if (typeof resp === 'object' && resp._id) {
-                alert("register success!");
+                setTimeout(function () {
+                  alert("register successfully!");
+                  main.$router.push({
+                    path: '/user-login',
+                    name: 'UserLogin',
+                  })
+                }, 1000)
               } else {
                 alert(resp.message);
               }

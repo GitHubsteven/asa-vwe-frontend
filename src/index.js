@@ -8,12 +8,20 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+let store = new Vuex.Store({
   state: {
     username: null,
     email: null
   },
-  mutations: {},
+  mutations: {
+    setUser(state, user) {
+      state['username'] = user.username;
+      state['email'] = user.email;
+    },
+    getUserName(state) {
+      return state.username;
+    }
+  },
   actions: {},
   getters: {
     getUserName: username => {

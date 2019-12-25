@@ -8,11 +8,12 @@
                         <el-menu-item index="/blog-list">
                             我的博客
                         </el-menu-item>
-                        <el-menu-item v-if="username == null" index="/user-login" style="float: right">
+                        <el-menu-item v-if="!$store.state.username" index="/user-login" style="float: right">
                             登录
                         </el-menu-item>
-                        <el-menu-item v-if="username != null" style="float: right">
-                            <el-link onclick="loginOut()">退出</el-link>
+                        <el-menu-item v-if="$store.state.username" style="float: right">
+                            <span><strong style="color: black">{{$store.state.username}}</strong></span>
+                            <el-link @click="loginOut()">退出</el-link>
                         </el-menu-item>
                     </el-menu>
                 </el-header>
@@ -40,8 +41,15 @@
     data() {
       return {
         activeIndex: '/blog-list',
-        username: this.store.username
+        username: ""
       };
+    },
+    created() {
+      let userStr = localStorage.getItem("user");
+      let userBean = JSON.parse(userStr);
+      if (userBean) {
+        this.$store.commit("setUser", {"username": userBean.name, "email": userBean.email})
+      }
     },
     methods: {
       handleSelect(key, keyPath) {
@@ -49,10 +57,10 @@
       },
       loginOut() {
         alert("确定要退出吗？");
-        this.store.commit("setUsername(null)");
+        this.$store.commit("setUser", {"username": null, "email": null});
       },
     },
-    router,
+    router
   }
 </script>
 
