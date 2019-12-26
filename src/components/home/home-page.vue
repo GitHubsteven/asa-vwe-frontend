@@ -1,5 +1,5 @@
 <template>
-    <div>welcome to the homepage</div>
+    <div>statistics</div>
 </template>
 
 <script>

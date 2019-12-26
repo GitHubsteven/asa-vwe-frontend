@@ -21,7 +21,7 @@
                     <router-view></router-view>
                 </el-main>
                 <div class="line"></div>
-                <el-footer class="footer_context"><label>Asa.x, Just For Fun</label></el-footer>
+                <el-footer class="footer_context"><label>~~~~~~~~~~~~~~~~~~~飘啊飘啊飘~~~~~~~~~~~~~~~~~~~~~~~</label></el-footer>
             </el-container>
         </div>
     </div>
@@ -58,6 +58,7 @@
       loginOut() {
         alert("确定要退出吗？");
         this.$store.commit("setUser", {"username": null, "email": null});
+        localStorage.removeItem("user")
       },
     },
     router

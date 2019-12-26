@@ -61,6 +61,8 @@
                 setTimeout(() => {
                   // this.$store.commit('setUser', resp);
                   localStorage.setItem("user", JSON.stringify(resp));
+                  resp['username'] = resp['name'];
+                  this.$store.commit("setUser", resp);
                   this.$router.push({
                     path: '/blog-list',
                     name: 'BlogList',

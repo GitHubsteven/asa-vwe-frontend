@@ -5,10 +5,12 @@ import BlogView from '../components/blog-view.vue'
 import BlogAdd from '../components/blog-add.vue'
 import UserLogin from "../components/user/user-login.vue"
 import UserRegister from "../components/user/user-register.vue"
+import HomePage from "../components/home/home-page.vue"
 
 Vue.use(Router);
 
-export default new Router({
+let router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/blog-list',
@@ -35,5 +37,21 @@ export default new Router({
       name: 'UserRegister',
       component: UserRegister
     },
+    {
+      path: '/home-page',
+      name: 'HomePage',
+      component: HomePage
+    },
   ]
-})
+});
+router.beforeEach((to, from, next) => {
+  let publicPages = ['/','/blog-list', '/user-login', '/user-register', '/blog-view'];
+  let authRequired = !publicPages.includes(to.path);
+  let loggedIn = localStorage.getItem('user');
+  if (authRequired && !loggedIn) {
+    return next('/user-login');
+  }
+  next();
+});
+
+export default router;
