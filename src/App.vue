@@ -20,8 +20,11 @@
                 <el-main>
                     <router-view></router-view>
                 </el-main>
-                <div class="line"></div>
-                <el-footer class="footer_context"><label>~~~~~~~~~~~~~~~~~~~飘啊飘啊飘~~~~~~~~~~~~~~~~~~~~~~~</label></el-footer>
+                <div class="line">
+                    <br>
+                </div>
+                <el-footer class="footer_context"><label>~~~~~~~~~~~~~~~~~~~飘啊飘啊飘~~~~~~~~~~~~~~~~~~~~~~~</label>
+                </el-footer>
             </el-container>
         </div>
     </div>
