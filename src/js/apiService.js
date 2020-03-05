@@ -10,7 +10,12 @@ export class ApiService {
 
 //定义一个方法查询
   getBlogs(searchOpt) {
-    const url = `${API_URL}/blog-list/`;
+    const url = `${API_URL}/blog/list`;
+    return axios.post(url, searchOpt).then((res) => res.data);
+  }
+
+  listBlogs(searchOpt) {
+    const url = `${API_URL}/api/blog/list`;
     return axios.post(url, searchOpt).then((res) => res.data);
   }
 

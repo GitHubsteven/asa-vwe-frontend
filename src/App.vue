@@ -8,23 +8,19 @@
                         <el-menu-item index="/blog-list">
                             我的博客
                         </el-menu-item>
-                        <el-menu-item v-if="!$store.state.username" index="/user-login" style="float: right">
+                        <el-menu-item v-if="username == null" index="/user-login" style="float: right">
                             登录
                         </el-menu-item>
-                        <el-menu-item v-if="$store.state.username" style="float: right">
-                            <span><strong style="color: black">{{$store.state.username}}</strong></span>
-                            <el-link @click="loginOut()">退出</el-link>
+                        <el-menu-item v-if="username != null" style="float: right">
+                            <el-link onclick="loginOut()">退出</el-link>
                         </el-menu-item>
                     </el-menu>
                 </el-header>
                 <el-main>
                     <router-view></router-view>
                 </el-main>
-                <div class="line">
-                    <br>
-                </div>
-                <el-footer class="footer_context"><label>~~~~~~~~~~~~~~~~~~~飘啊飘啊飘~~~~~~~~~~~~~~~~~~~~~~~</label>
-                </el-footer>
+                <div class="line"></div>
+                <el-footer class="footer_context"><label>Asa.x, Just For Fun</label></el-footer>
             </el-container>
         </div>
     </div>
@@ -32,9 +28,6 @@
 
 <script>
   import router from './router/index.js'
-  import {UserService} from "./js/userService";
-
-  let userService = new UserService();
 
   export default {
     name: "App",
@@ -44,15 +37,8 @@
     data() {
       return {
         activeIndex: '/blog-list',
-        username: ""
+        username: this.store ? this.store.username : "asa.x"
       };
-    },
-    created() {
-      let userStr = localStorage.getItem("user");
-      let userBean = JSON.parse(userStr);
-      if (userBean) {
-        this.$store.commit("setUser", {"username": userBean.name, "email": userBean.email})
-      }
     },
     methods: {
       handleSelect(key, keyPath) {
@@ -60,11 +46,10 @@
       },
       loginOut() {
         alert("确定要退出吗？");
-        this.$store.commit("setUser", {"username": null, "email": null});
-        localStorage.removeItem("user")
+        this.store.commit("setUsername(null)");
       },
     },
-    router
+    router,
   }
 </script>
 

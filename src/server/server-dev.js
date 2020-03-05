@@ -11,6 +11,9 @@ let logger = require('morgan');
 import router from '../ex-router/ex-router';
 import userRouter from '../ex-router/user-router';
 
+let proxy = require('http-proxy-middleware');
+let TARGET_SERVER = "http://localhost:9100";
+let COMMENTS_SERVER = "http://localhost:9200";
 //链接数据库
 let bodyParser = require('body-parser');
 let cors = require('cors');
@@ -23,6 +26,18 @@ const app = express(),
   compiler = webpack(config);
 app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
+}));
+//use proxy
+app.use('/api', proxy({
+  target: TARGET_SERVER,
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': ''
+  },
+  //reset target for specified request
+  router: {
+    'api/comments': 'http://127.0.0.1:9200'
+  }
 }));
 
 //服务器连接数据库
@@ -46,11 +61,11 @@ app.use(cors());
 app.use(cookieParser());
 // 使用 session 中间件
 app.use(session({
-  secret :  'secret', // 对session id 相关的cookie 进行签名
-  resave : true,
+  secret: 'secret', // 对session id 相关的cookie 进行签名
+  resave: true,
   saveUninitialized: false, // 是否保存未初始化的会话
-  cookie : {
-    maxAge : 1000 * 60 * 3, // 设置 session 的有效时间，单位毫秒
+  cookie: {
+    maxAge: 1000 * 60 * 3, // 设置 session 的有效时间，单位毫秒
   },
 }));
 app.use(router);
@@ -72,6 +87,6 @@ app.listen(PORT, (err) => {
     console.log(err);
     return;
   }
-  console.log(`App listening to ${PORT}....`)
+  console.log(`App listening to ${PORT}....`);
   console.log('Press Ctrl+C to quit.')
 });

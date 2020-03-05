@@ -9,7 +9,7 @@
                     <hr/>
                     <el-input
                             type="textarea"
-                            v-html="convertMarkdown(blog.context)"
+                            v-html="convertMarkdown(blog.content)"
                             maxlength="3000"
                             show-word-limit
                             :autosize="{ minRows: 50, maxRows: 300 }"
@@ -38,12 +38,12 @@
                     </el-form-item>
                     <el-form-item
                             label="评论"
-                            prop="context"
+                            prop="content"
                             :rules="{
                           required: true, message: '评论不能为空', trigger: 'blur'
                         }"
                     >
-                        <el-input v-model="comment.context"
+                        <el-input v-model="comment.content"
                                   type="textarea"
                                   rows="5"
                                   max-length="300"
@@ -67,13 +67,13 @@
                         <el-card style="background-color: #FAFAFA">
                             <div>
                                 <el-tag type="info">{{refCommentObj.author}}的评论</el-tag>
-                                <p>{{refCommentObj.context}}</p>
+                                <p>{{refCommentObj.content}}</p>
                             </div>
                         </el-card>
                         <el-form :model="comment" style="margin-top: 10px">
                             <el-form-item label="" label-width="0px">
                                 <el-input type="textarea"
-                                          v-model="comment.context"
+                                          v-model="comment.content"
                                           rows="5"
                                           max-length="300"
                                           show-word-limit
@@ -115,7 +115,7 @@
       return {
         blog: {
           title: null,
-          context: null,
+          content: null,
           author: null,
           createTime: null,
           _id: null
@@ -123,7 +123,7 @@
         comment: {
           author: "asa.x",
           email: null,
-          context: null,
+          content: null,
           blogId: this.$route.query.blogId,
           refId: null
         },
@@ -140,7 +140,7 @@
         blogComments: [],
         refCommentObj: {
           _id: null,
-          context: null,
+          content: null,
           author: null
         },
         defaultProps: {
@@ -176,19 +176,19 @@
           this.blogComments = convertService.divideComment(resp);
         });
       },
-      convertMarkdown(context) {
-        return convertService.makeHtml(context);
+      convertMarkdown(content) {
+        return convertService.makeHtml(content);
       },
       /**
        * 提交评论
        * @param comment
        */
       submitComment(comment) {
-        if (!comment.email || !comment.context) {
+        if (!comment.email || !comment.content) {
           window.alert("邮箱和评论不能为空！");
           return;
         }
-        axiosService.post("/comments-create/", comment).then((resp) => {
+        axiosService.post("/api/comments/add", comment).then((resp) => {
           if (resp._id) {
             //表示成功
             this.$notify({
@@ -221,7 +221,7 @@
         this.isRefComDialogVisual = true;
       },
       delComment(com) {
-        window.alert("删除评论：" + com.context);
+        window.alert("删除评论：" + com.content);
       },
       confirmRefCmdDialog() {
         this.comment.refId = this.refCommentObj._id;
