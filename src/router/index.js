@@ -10,48 +10,48 @@ import HomePage from "../components/home/home-page.vue"
 Vue.use(Router);
 
 let router = new Router({
-  mode: 'history',
-  routes: [
-    {
-      path: '/blog-list',
-      name: 'BlogList',
-      component: BlogList
-    },
-    {
-      path: '/blog-view',
-      name: 'BlogView',
-      component: BlogView
-    },
-    {
-      path: '/blog-add',
-      name: 'BlogAdd',
-      component: BlogAdd
-    },
-    {
-      path: '/user-login',
-      name: 'UserLogin',
-      component: UserLogin
-    },
-    {
-      path: '/user-register',
-      name: 'UserRegister',
-      component: UserRegister
-    },
-    {
-      path: '/home-page',
-      name: 'HomePage',
-      component: HomePage
-    },
-  ]
+    // mode: 'history',
+    routes: [
+        {
+            path: '/blog-list',
+            name: 'BlogList',
+            component: BlogList
+        },
+        {
+            path: '/blog-view',
+            name: 'BlogView',
+            component: BlogView
+        },
+        {
+            path: '/blog-add',
+            name: 'BlogAdd',
+            component: BlogAdd
+        },
+        {
+            path: '/user-login',
+            name: 'UserLogin',
+            component: UserLogin
+        },
+        {
+            path: '/user-register',
+            name: 'UserRegister',
+            component: UserRegister
+        },
+        {
+            path: '/home-page',
+            name: 'HomePage',
+            component: HomePage
+        },
+    ]
 });
 router.beforeEach((to, from, next) => {
-  let publicPages = ['/','/blog-list', '/user-login', '/user-register', '/blog-view'];
-  let authRequired = !publicPages.includes(to.path);
-  let loggedIn = localStorage.getItem('user');
-  if (authRequired && !loggedIn) {
-    return next('/user-login');
-  }
-  next();
+    let publicPages = ['/', '/blog-list', '/user-login', '/user-register', '/blog-view'];
+    let authRequired = !publicPages.includes(to.path);
+    let loggedIn = localStorage.getItem('user');
+    if (false) {  //authRequired && !loggedIn
+        return next('/user-login');
+    }
+    next();
 });
 
 export default router;
