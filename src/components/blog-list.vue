@@ -6,15 +6,15 @@
                     <el-col :span="3">
                         <div>
                             <router-link to="/blog-add">
-                                <el-button type="primary">增加博客</el-button>
+                                <el-button type="primary">Add</el-button>
                             </router-link>
                         </div>
                     </el-col>
 
                     <el-col :span="5" :offset="11">
                         <div>
-                            <el-input placeholder="请输入内容" v-model="searchers.title">
-                                <template slot="prepend">博客名称</template>
+                            <el-input placeholder="input title" v-model="searchers.title">
+                                <template slot="prepend">Title</template>
                                 <el-button slot="append" icon="el-icon-search" @click="searchBlogs()"></el-button>
                             </el-input>
                         </div>
@@ -39,7 +39,7 @@
                                 {{createSyllabus(blog.context)}}
                             </div>
                             <div class="text item">
-                                <el-tag type="info">测试</el-tag>
+                                <el-tag type="info">test</el-tag>
                                 <el-tag type="info">{{blog.author}}</el-tag>
                                 <el-tag type="info">{{blog.createTime}}</el-tag>
                             </div>

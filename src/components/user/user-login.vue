@@ -36,53 +36,53 @@
 </template>
 
 <script>
-  import {AxiosService} from "../../js/axiosService"
+    import {AxiosService} from "../../js/axiosService"
 
-  let axiosService = new AxiosService();
+    let axiosService = new AxiosService();
 
-  export default {
-    name: "user-login",
-    data() {
-      return {
-        userLoginForm: {
-          email: '',
-          pass: ''
+    export default {
+        name: "user-login",
+        data() {
+            return {
+                userLoginForm: {
+                    email: '',
+                    pass: ''
+                },
+                username: ''
+            };
         },
-        username: ''
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            axiosService.post("/user-login", this.userLoginForm).then((resp) => {
-              if (resp._id) {
-                resp['username'] = resp.name;
-                setTimeout(() => {
-                  // this.$store.commit('setUser', resp);
-                  localStorage.setItem("user", JSON.stringify(resp));
-                  resp['username'] = resp['name'];
-                  this.$store.commit("setUser", resp);
-                  this.$router.push({
-                    path: '/blog-list',
-                    name: 'BlogList',
-                  })
-                }, 1000)
-              } else {
-                alert(resp.message || "login failed!");
-              }
-            })
-          } else {
-            alert("plz fill the login information correctly!");
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axiosService.post("/user-login", this.userLoginForm).then((resp) => {
+                            if (resp._id) {
+                                resp['username'] = resp.name;
+                                setTimeout(() => {
+                                    // this.$store.commit('setUser', resp);
+                                    localStorage.setItem("user", JSON.stringify(resp));
+                                    resp['username'] = resp['name'];
+                                    this.$store.commit("setUser", resp);
+                                    this.$router.push({
+                                        path: '/blog-list',
+                                        name: 'BlogList',
+                                    })
+                                }, 1000)
+                            } else {
+                                alert(resp.message || "login failed!");
+                            }
+                        })
+                    } else {
+                        alert("plz fill the login information correctly!");
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

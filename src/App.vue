@@ -6,14 +6,14 @@
                     <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" router
                              @select="handleSelect">
                         <el-menu-item index="/blog-list">
-                            我的博客
+                            Blogs
                         </el-menu-item>
                         <el-menu-item v-if="!$store.state.username" index="/user-login" style="float: right">
-                            登录
+                            Login
                         </el-menu-item>
                         <el-menu-item v-if="$store.state.username" style="float: right">
                             <span><strong style="color: black">{{$store.state.username}}</strong></span>
-                            <el-link @click="loginOut()">退出</el-link>
+                            <el-link @click="loginOut()">LoginOut</el-link>
                         </el-menu-item>
                     </el-menu>
                 </el-header>
@@ -23,7 +23,7 @@
                 <div class="line">
                     <br>
                 </div>
-                <el-footer class="footer_context"><label>~~~~~~~~~~~~~~~~~~~飘啊飘啊飘~~~~~~~~~~~~~~~~~~~~~~~</label>
+                <el-footer class="footer_context"><label>CopyRight @ asa.x</label>
                 </el-footer>
             </el-container>
         </div>

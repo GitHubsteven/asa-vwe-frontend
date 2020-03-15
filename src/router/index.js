@@ -47,8 +47,9 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
     let publicPages = ['/', '/blog-list', '/user-login', '/user-register', '/blog-view'];
     let authRequired = !publicPages.includes(to.path);
+    // eslint-disable-next-line no-undef
     let loggedIn = localStorage.getItem('user');
-    if (false) {  //authRequired && !loggedIn
+    if (authRequired && !loggedIn) {  //authRequired && !loggedIn
         return next('/user-login');
     }
     next();
