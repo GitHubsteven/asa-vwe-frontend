@@ -27,30 +27,30 @@
 </template>
 
 <script>
-  import router from './router/index.js'
+    import router from './router/index.js'
 
-  export default {
-    name: "App",
-    components: {
-      Navigator
-    },
-    data() {
-      return {
-        activeIndex: '/blog-list',
-        username: this.store ? this.store.username : "asa.x"
-      };
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      loginOut() {
-        alert("确定要退出吗？");
-        this.store.commit("setUsername(null)");
-      },
-    },
-    router,
-  }
+    export default {
+        name: "App",
+        components: {
+            Navigator
+        },
+        data() {
+            return {
+                activeIndex: '/blog-list',
+                username: this.store ? this.store.username : "asa.x"
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            loginOut() {
+                alert("确定要退出吗？");
+                this.store.commit("setUsername(null)");
+            },
+        },
+        router,
+    }
 </script>
 
 <style scoped>

@@ -26,102 +26,102 @@
 </template>
 
 <script>
-  import {AxiosService} from "../../js/axiosService"
+    import {AxiosService} from "../../js/axiosService"
 
-  let axiosService = new AxiosService();
-  export default {
-    name: "user-register",
-    data() {
-      let validateName = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入名称'));
-        }
-        callback();
-      };
-      let validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.register.checkPass !== '') {
-            this.$refs.register.validateField('checkPass');
-          }
-          callback();
-        }
-      };
-      let validatePass2 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.register.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
-      let validateEmail = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error("请输入邮箱"));
-        } else {
-          let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          if (!re.test(String(value).toLowerCase())) {
-            callback(new Error('请输入正确的邮箱地址!'));
-          } else {
-            callback();
-          }
-        }
-      };
-      return {
-        register: {
-          name: "",
-          email: '',
-          pass: '',
-          checkPass: ''
+    let axiosService = new AxiosService();
+    export default {
+        name: "user-register",
+        data() {
+            let validateName = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入名称'));
+                }
+                callback();
+            };
+            let validatePass = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.register.checkPass !== '') {
+                        this.$refs.register.validateField('checkPass');
+                    }
+                    callback();
+                }
+            };
+            let validatePass2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.register.pass) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
+            let validateEmail = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error("请输入邮箱"));
+                } else {
+                    let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    if (!re.test(String(value).toLowerCase())) {
+                        callback(new Error('请输入正确的邮箱地址!'));
+                    } else {
+                        callback();
+                    }
+                }
+            };
+            return {
+                register: {
+                    name: "",
+                    email: '',
+                    pass: '',
+                    checkPass: ''
+                },
+                rules: {
+                    name: [
+                        {validator: validateName, trigger: 'blur'}
+                    ],
+                    email: [
+                        {validator: validateEmail, trigger: ['blur', 'change']}
+                    ],
+                    pass: [
+                        {validator: validatePass, trigger: 'blur'}
+                    ],
+                    checkPass: [
+                        {validator: validatePass2, trigger: 'blur'}
+                    ],
+                }
+            };
         },
-        rules: {
-          name: [
-            {validator: validateName, trigger: 'blur'}
-          ],
-          email: [
-            {validator: validateEmail, trigger: ['blur', 'change']}
-          ],
-          pass: [
-            {validator: validatePass, trigger: 'blur'}
-          ],
-          checkPass: [
-            {validator: validatePass2, trigger: 'blur'}
-          ],
+        methods: {
+            submitForm(formName) {
+                let main = this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axiosService.post("/user-register", this.register).then(resp => {
+                            //如果_id存在的话，那么就是注册成功了
+                            if (typeof resp === 'object' && resp._id) {
+                                setTimeout(function () {
+                                    alert("register successfully!");
+                                    main.$router.push({
+                                        path: '/user-login',
+                                        name: 'UserLogin',
+                                    })
+                                }, 1000)
+                            } else {
+                                alert(resp.message);
+                            }
+                        })
+                    } else {
+                        alert('plz fill the info correctly!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            }
         }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        let main = this;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            axiosService.post("/user-register", this.register).then(resp => {
-              //如果_id存在的话，那么就是注册成功了
-              if (typeof resp === 'object' && resp._id) {
-                setTimeout(function () {
-                  alert("register successfully!");
-                  main.$router.push({
-                    path: '/user-login',
-                    name: 'UserLogin',
-                  })
-                }, 1000)
-              } else {
-                alert(resp.message);
-              }
-            })
-          } else {
-            alert('plz fill the info correctly!');
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
     }
-  }
 </script>
 
 <style scoped>
