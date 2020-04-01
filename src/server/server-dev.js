@@ -1,9 +1,5 @@
 import path from 'path'
 import express from 'express'
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
-import config from '../../webpack.server.config'
 
 let createError = require('http-errors');
 let cookieParser = require('cookie-parser');
@@ -17,11 +13,7 @@ let cors = require('cors');
 let mongoose = require('mongoose');
 let session = require('express-session');
 
-const app = express(),
-  compiler = webpack(config);
-app.use(webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath
-}));
+const app = express();
 
 //服务器连接数据库
 let DB_URL = "mongodb://localhost:27017/blogs";
@@ -53,11 +45,6 @@ app.use(session({
 }));
 app.use(router);
 app.use(userRouter);
-
-app.use(webpackHotMiddleware(compiler, {
-    noInfo: false,
-    publicPath: config.output.publicPath
-}));
 
 const PORT = process.env.PORT || 8090;
 app.listen(PORT, (err) => {
