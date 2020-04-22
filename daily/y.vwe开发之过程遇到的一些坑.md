@@ -42,5 +42,26 @@
  let id = this.$route.query.blogId;
 ```
 
-3. this到底指的谁？
+3. 打包生成的文件过大
+执行npm run build在生成文件的过程中，会出现警报如下
+```
+WARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).
+This can impact web performance.
+Assets:
+  main.js (1.05 MiB)
+```
+解决方案1(流氓方法，强行忽略)：
+```
+performance: {
+        hints: true,
+        maxAssetSize: 300000, // 整数类型（以字节为单位）
+        maxEntrypointSize: 500000, // 整数类型（以字节为单位）
+        assetFilter: function (assetFilename) {
+            // 提供资源文件名的断言函数
+            return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+        }
+    }
+```
+
+解决方案2：https://www.jianshu.com/p/35a0998746fa
 

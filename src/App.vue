@@ -31,41 +31,39 @@
 </template>
 
 <script>
-  import router from './router/index.js'
-  import {UserService} from "./js/userService";
+    import router from './router/index.js'
+    import {UserService} from "./js/userService";
 
-  let userService = new UserService();
-
-  export default {
-    name: "App",
-    components: {
-      Navigator
-    },
-    data() {
-      return {
-        activeIndex: '/blog-list',
-        username: ""
-      };
-    },
-    created() {
-      let userStr = localStorage.getItem("user");
-      let userBean = JSON.parse(userStr);
-      if (userBean) {
-        this.$store.commit("setUser", {"username": userBean.name, "email": userBean.email})
-      }
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      loginOut() {
-        alert("确定要退出吗？");
-        this.$store.commit("setUser", {"username": null, "email": null});
-        localStorage.removeItem("user")
-      },
-    },
-    router
-  }
+    export default {
+        name: "App",
+        components: {
+            Navigator
+        },
+        data() {
+            return {
+                activeIndex: '/blog-list',
+                username: ""
+            };
+        },
+        created() {
+            let userStr = localStorage.getItem("user");
+            let userBean = JSON.parse(userStr);
+            if (userBean) {
+                this.$store.commit("setUser", {"username": userBean.name, "email": userBean.email})
+            }
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            loginOut() {
+                alert("确定要退出吗？");
+                this.$store.commit("setUser", {"username": null, "email": null});
+                localStorage.removeItem("user")
+            },
+        },
+        router
+    }
 </script>
 
 <style scoped>

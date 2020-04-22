@@ -8,7 +8,6 @@ let port = {
     api: 9090
 };
 
-
 module.exports = {
     entry: {
         main: './src/index.js'
@@ -18,7 +17,8 @@ module.exports = {
     output: {
         path: path.join(__dirname, 'dist'),
         publicPath: '/',
-        filename: '[name].js'
+        filename: '[name].js',
+        chunkFilename: '[name].bundle.js'
     },
     resolve: {
         extensions: ['.js', '.vue']
@@ -103,6 +103,15 @@ module.exports = {
                 changeOrigin: true,
                 pathRewrite: {'/api': ''}
             }
+        }
+    },
+    performance: {
+        hints: false,
+        maxAssetSize: 300000, // 整数类型（以字节为单位）
+        maxEntrypointSize: 500000, // 整数类型（以字节为单位）
+        assetFilter: function (assetFilename) {
+            // 提供资源文件名的断言函数
+            return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
         }
     }
 };

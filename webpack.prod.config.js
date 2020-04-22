@@ -15,8 +15,11 @@ module.exports = {
         publicPath: '/',
         filename: '[name].js'
     },
+    externals: {
+        element: 'ElementUI'
+    },
     target: 'web',
-    devtool: 'source-map',
+    // devtool: 'source-map',
     // Webpack 4 does not have a CSS minifier, although
     // Webpack 5 will likely come with one
     optimization: {
@@ -98,5 +101,14 @@ module.exports = {
             filename: "[name].css",
             chunkFilename: "[id].css"
         })
-    ]
+    ],
+    // performance: {
+    //     hints: false,
+    //     maxAssetSize: 300000, // 整数类型（以字节为单位）
+    //     maxEntrypointSize: 500000, // 整数类型（以字节为单位）
+    //     assetFilter: function (assetFilename) {
+    //         // 提供资源文件名的断言函数
+    //         return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+    //     }
+    // }
 };
