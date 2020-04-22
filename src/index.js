@@ -2,10 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex';
 import App from './App.vue'
 import './css/style.css'
-// import ElementUI from 'element-ui';
-// import 'element-ui/lib/theme-chalk/index.css';
-
-// Vue.use(ElementUI);
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
 Vue.use(Vuex);
 
 let store = new Vuex.Store({
